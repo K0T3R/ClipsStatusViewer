@@ -1,0 +1,6528 @@
+var viewModel = {
+    layout: ko.observable({}),
+    viewPort: ko.observable({}),
+    users: ko.observableArray([]),
+    selectedUser: ko.observable(""),
+    stats: {
+        commited: ko.observable(0),
+        locked: ko.observable(0),
+        unassigned: ko.observable(0),
+        totalClips: ko.observable(0),
+        visibleClips: ko.observable(0),        
+    },
+    currentClip: ko.observable({
+        "Clip": "",
+        "Status": "0",
+        "Error": "",
+        "User": ""
+    })
+};
+
+var data_rect = {
+    "MinX": 0,
+    "MinY": -10560,
+    "MaxX": 5820740,
+    "MaxY": 4654920
+};
+
+var data_time = 0;
+
+var data_clips = crossfilter([{
+    "Clip": "clip_0_par_psf4",
+    "MinX": 5135520,
+    "MinY": 569940,
+    "MaxX": 5246880,
+    "MaxY": 738780,
+    "Status": "0",
+    "Error": "M2BB_22;M2BB_33;M2BB_34;M2BB_34/35_INFO;M2BB_35;M2BC_21;M2_00;M2_128;M2_138;M2_139;M2_21;M2_22;M2_42;M2_44;M2_47;M2_ER0;M2_ER1;M3_00;M3_128;M3_138;M3_21;M3_42;M3_ER0;M4BC_21;M4_00;M4_128;M4_138;M4_21;M4_41;M4_42;M4_44;M4_47;M4_48;M4_ER1;M5_00;M5_128;M5_138;M5_21;M5_42;M5_ER0;M6_21/22/31/46;M6_31;M6_33;M6_46;M6_52;M6_71;M6_ER0;M6_ER1;M7_32;M7_70;M7_ER1;M8_65;M8_83;M8_ER1;V1_28;V1_ER2;V2_128;V2_24;V2_240;V2_251;V2_28;V2_33;V2_41;V2_ER0;V2_ER1;V2_ER2;V2_ER4;V3_128;V3_24;V3_240;V3_28;V3_33;V3_41;V3_61;V3_ER2;V3_ER4;V4_128;V4_24;V4_240;V4_28;V4_33;V4_41;V4_49;V4_ER0;V4_ER1;V4_ER2;V4_ER4;V5_128;V5_24;V5_240;V5_25;V5_26;V5_28;V5_33;V5_41;V5_54;V5_61;V5_ER2;V5_ER4;V6_22;V6_25;V6_28;V6_33;V6_40;V6_41;V6_49;V6_61;V6_ER0;V6_ER2;V6_ER4;V7_22;V7_28;V7_33;V7_41;V7_49;V7_54;V7_61;V7_ER4",
+    "User": ""
+}, {
+    "Clip": "clip_100_par_psf4",
+    "MinX": 4036810,
+    "MinY": 3431420,
+    "MaxX": 4047370,
+    "MaxY": 3441740,
+    "Status": "2",
+    "Error": "M4_47",
+    "User": "user2"
+}, {
+    "Clip": "clip_101_par_psf4",
+    "MinX": 3689770,
+    "MinY": 3539080,
+    "MaxX": 3700330,
+    "MaxY": 3549400,
+    "Status": "0",
+    "Error": "M4_47",
+    "User": ""
+}, {
+    "Clip": "clip_102_par_psf4",
+    "MinX": 4030450,
+    "MinY": 3629200,
+    "MaxX": 4051490,
+    "MaxY": 3646280,
+    "Status": "0",
+    "Error": "M1_81;M4_47",
+    "User": ""
+}, {
+    "Clip": "clip_103_par_psf4",
+    "MinX": 5151540,
+    "MinY": 4216820,
+    "MaxX": 5162100,
+    "MaxY": 4227140,
+    "Status": "2",
+    "Error": "M4_47",
+    "User": "user2"
+}, {
+    "Clip": "clip_104_par_psf4",
+    "MinX": 3756450,
+    "MinY": 4200300,
+    "MaxX": 3767010,
+    "MaxY": 4210620,
+    "Status": "2",
+    "Error": "M4_47",
+    "User": "user2"
+}, {
+    "Clip": "clip_105_par_psf4",
+    "MinX": 311410,
+    "MinY": 4398120,
+    "MaxX": 321970,
+    "MaxY": 4408440,
+    "Status": "1",
+    "Error": "M4_47",
+    "User": ""
+}, {
+    "Clip": "clip_106_par_psf4",
+    "MinX": 487480,
+    "MinY": 402880,
+    "MaxX": 502680,
+    "MaxY": 413370,
+    "Status": "2",
+    "Error": "M5_44",
+    "User": "user2"
+}, {
+    "Clip": "clip_107_par_psf4",
+    "MinX": 700040,
+    "MinY": 1159580,
+    "MaxX": 744760,
+    "MaxY": 1201720,
+    "Status": "2",
+    "Error": "M1_81;M1_85/86;M2_44;M2_47;M3_44;M4_44",
+    "User": "user1"
+}, {
+    "Clip": "clip_108_par_psf4",
+    "MinX": 1775240,
+    "MinY": 3473780,
+    "MaxX": 1786390,
+    "MaxY": 3515920,
+    "Status": "1",
+    "Error": "M2_44;M2_47;M3_44;M4_44",
+    "User": "user3"
+}, {
+    "Clip": "clip_109_par_psf4",
+    "MinX": 3006670,
+    "MinY": 1609540,
+    "MaxX": 3016870,
+    "MaxY": 1619820,
+    "Status": "2",
+    "Error": "M2_147",
+    "User": "user3"
+}, {
+    "Clip": "clip_10_par_psf4",
+    "MinX": 5740070,
+    "MinY": 3740760,
+    "MaxX": 5750270,
+    "MaxY": 3753720,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user2"
+}, {
+    "Clip": "clip_110_par_psf4",
+    "MinX": 583220,
+    "MinY": 2031440,
+    "MaxX": 593420,
+    "MaxY": 2041720,
+    "Status": "2",
+    "Error": "M2_147",
+    "User": "user3"
+}, {
+    "Clip": "clip_111_par_psf4",
+    "MinX": 4503200,
+    "MinY": 1132270,
+    "MaxX": 4526890,
+    "MaxY": 1149640,
+    "Status": "1",
+    "Error": "M1_69;M1_81;M1_84;M1_85/86",
+    "User": "user1"
+}, {
+    "Clip": "clip_112_par_psf4",
+    "MinX": 4258900,
+    "MinY": 1507330,
+    "MaxX": 4269290,
+    "MaxY": 1518000,
+    "Status": "2",
+    "Error": "M1_69;M1_84;M1_85/86",
+    "User": "user3"
+}, {
+    "Clip": "clip_113_par_psf4",
+    "MinX": 3263500,
+    "MinY": 1531270,
+    "MaxX": 3273890,
+    "MaxY": 1541940,
+    "Status": "2",
+    "Error": "M1_69;M1_84;M1_85/86",
+    "User": "user1"
+}, {
+    "Clip": "clip_114_par_psf4",
+    "MinX": 530610,
+    "MinY": 1661000,
+    "MaxX": 546980,
+    "MaxY": 1677860,
+    "Status": "2",
+    "Error": "M1_69;M1_84;M1_85/86;V1_25",
+    "User": "user1"
+}, {
+    "Clip": "clip_115_par_psf4",
+    "MinX": 1946100,
+    "MinY": 1858450,
+    "MaxX": 1956490,
+    "MaxY": 1869120,
+    "Status": "0",
+    "Error": "M1_69;M1_84;M1_85/86",
+    "User": ""
+}, {
+    "Clip": "clip_116_par_psf4",
+    "MinX": 3749300,
+    "MinY": 1994110,
+    "MaxX": 3759690,
+    "MaxY": 2004780,
+    "Status": "1",
+    "Error": "M1_69;M1_84;M1_85/86",
+    "User": "user3"
+}, {
+    "Clip": "clip_117_par_psf4",
+    "MinX": 1666710,
+    "MinY": 2393110,
+    "MaxX": 1677090,
+    "MaxY": 2403780,
+    "Status": "2",
+    "Error": "M1_69;M1_84;M1_85/86",
+    "User": "user2"
+}, {
+    "Clip": "clip_118_par_psf4",
+    "MinX": 1207510,
+    "MinY": 2648470,
+    "MaxX": 1217890,
+    "MaxY": 2659140,
+    "Status": "0",
+    "Error": "M1_69;M1_84;M1_85/86",
+    "User": ""
+}, {
+    "Clip": "clip_119_par_psf4",
+    "MinX": 5103100,
+    "MinY": 2927770,
+    "MaxX": 5113490,
+    "MaxY": 2938440,
+    "Status": "1",
+    "Error": "M1_69;M1_84;M1_85/86",
+    "User": "user1"
+}, {
+    "Clip": "clip_11_par_psf4",
+    "MinX": 5337720,
+    "MinY": 3740760,
+    "MaxX": 5347920,
+    "MaxY": 3753720,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_120_par_psf4",
+    "MinX": 1360900,
+    "MinY": 3007570,
+    "MaxX": 1371290,
+    "MaxY": 3018240,
+    "Status": "1",
+    "Error": "M1_69;M1_84;M1_85/86",
+    "User": "user3"
+}, {
+    "Clip": "clip_121_par_psf4",
+    "MinX": 5537100,
+    "MinY": 3119290,
+    "MaxX": 5547490,
+    "MaxY": 3129960,
+    "Status": "2",
+    "Error": "M1_69;M1_84;M1_85/86",
+    "User": "user3"
+}, {
+    "Clip": "clip_122_par_psf4",
+    "MinX": 4229500,
+    "MinY": 4172650,
+    "MaxX": 4239890,
+    "MaxY": 4183320,
+    "Status": "0",
+    "Error": "M1_69;M1_84;M1_85/86",
+    "User": ""
+}, {
+    "Clip": "clip_123_par_psf4",
+    "MinX": 330900,
+    "MinY": 537920,
+    "MaxX": 358780,
+    "MaxY": 579280,
+    "Status": "0",
+    "Error": "M2_21;M2_41;M2_44;M2_47",
+    "User": ""
+}, {
+    "Clip": "clip_124_par_psf4",
+    "MinX": 296840,
+    "MinY": 537920,
+    "MaxX": 307490,
+    "MaxY": 579280,
+    "Status": "2",
+    "Error": "M2_44;M2_47",
+    "User": "user2"
+}, {
+    "Clip": "clip_125_par_psf4",
+    "MinX": 4262100,
+    "MinY": 521960,
+    "MaxX": 4272760,
+    "MaxY": 563320,
+    "Status": "2",
+    "Error": "M2_44;M2_47",
+    "User": "user3"
+}, {
+    "Clip": "clip_126_par_psf4",
+    "MinX": 4228040,
+    "MinY": 521960,
+    "MaxX": 4238690,
+    "MaxY": 563320,
+    "Status": "1",
+    "Error": "M2_44;M2_47",
+    "User": "user1"
+}, {
+    "Clip": "clip_127_par_psf4",
+    "MinX": 1809300,
+    "MinY": 3474560,
+    "MaxX": 1819960,
+    "MaxY": 3515920,
+    "Status": "0",
+    "Error": "M2_44;M2_47",
+    "User": ""
+}, {
+    "Clip": "clip_128_par_psf4",
+    "MinX": 4900500,
+    "MinY": 3458600,
+    "MaxX": 4911160,
+    "MaxY": 3499960,
+    "Status": "2",
+    "Error": "M2_44;M2_47",
+    "User": "user3"
+}, {
+    "Clip": "clip_129_par_psf4",
+    "MinX": 4866440,
+    "MinY": 3458220,
+    "MaxX": 4877090,
+    "MaxY": 3500330,
+    "Status": "0",
+    "Error": "M2_44;M2_47;M3_44",
+    "User": ""
+}, {
+    "Clip": "clip_12_par_psf4",
+    "MinX": 5740070,
+    "MinY": 3699100,
+    "MaxX": 5757360,
+    "MaxY": 3721800,
+    "Status": "2",
+    "Error": "M6_149;M6_23/24/21/22/123/124/25/26/37/46;M6_46",
+    "User": "user1"
+}, {
+    "Clip": "clip_130_par_psf4",
+    "MinX": 947330,
+    "MinY": 1190180,
+    "MaxX": 958110,
+    "MaxY": 1200460,
+    "Status": "1",
+    "Error": "M2_60",
+    "User": "user2"
+}, {
+    "Clip": "clip_131_par_psf4",
+    "MinX": 1430930,
+    "MinY": 4158740,
+    "MaxX": 1441630,
+    "MaxY": 4169020,
+    "Status": "2",
+    "Error": "M2_60",
+    "User": "user2"
+}, {
+    "Clip": "clip_132_par_psf4",
+    "MinX": 779070,
+    "MinY": 607520,
+    "MaxX": 789280,
+    "MaxY": 618030,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_133_par_psf4",
+    "MinX": 391110,
+    "MinY": 583580,
+    "MaxX": 401480,
+    "MaxY": 594090,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_134_par_psf4",
+    "MinX": 643630,
+    "MinY": 735200,
+    "MaxX": 654180,
+    "MaxY": 745710,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_135_par_psf4",
+    "MinX": 216750,
+    "MinY": 703280,
+    "MaxX": 227180,
+    "MaxY": 713790,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_136_par_psf4",
+    "MinX": 783790,
+    "MinY": 695300,
+    "MaxX": 794180,
+    "MaxY": 705810,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_137_par_psf4",
+    "MinX": 943350,
+    "MinY": 838940,
+    "MaxX": 953780,
+    "MaxY": 849450,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_138_par_psf4",
+    "MinX": 1231110,
+    "MinY": 822980,
+    "MaxX": 1241480,
+    "MaxY": 833490,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_139_par_psf4",
+    "MinX": 113870,
+    "MinY": 815000,
+    "MaxX": 124280,
+    "MaxY": 825510,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_13_par_psf4",
+    "MinX": 5337720,
+    "MinY": 3708840,
+    "MaxX": 5347920,
+    "MaxY": 3721800,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user3"
+}, {
+    "Clip": "clip_140_par_psf4",
+    "MinX": 1051030,
+    "MinY": 791060,
+    "MaxX": 1061580,
+    "MaxY": 801570,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_141_par_psf4",
+    "MinX": 660430,
+    "MinY": 791060,
+    "MaxX": 670980,
+    "MaxY": 801570,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_142_par_psf4",
+    "MinX": 67150,
+    "MinY": 783080,
+    "MaxX": 77380,
+    "MaxY": 793590,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_143_par_psf4",
+    "MinX": 563310,
+    "MinY": 775100,
+    "MaxX": 573680,
+    "MaxY": 785610,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_144_par_psf4",
+    "MinX": 2041710,
+    "MinY": 902780,
+    "MaxX": 2052080,
+    "MaxY": 913290,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_145_par_psf4",
+    "MinX": 1151830,
+    "MinY": 886820,
+    "MaxX": 1162380,
+    "MaxY": 897330,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_146_par_psf4",
+    "MinX": 794830,
+    "MinY": 886820,
+    "MaxX": 805380,
+    "MaxY": 897330,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_147_par_psf4",
+    "MinX": 664630,
+    "MinY": 878840,
+    "MaxX": 675180,
+    "MaxY": 889350,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_148_par_psf4",
+    "MinX": 921830,
+    "MinY": 862880,
+    "MaxX": 932080,
+    "MaxY": 873390,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_149_par_psf4",
+    "MinX": 466670,
+    "MinY": 862880,
+    "MaxX": 477080,
+    "MaxY": 873390,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_14_par_psf4",
+    "MinX": 5740070,
+    "MinY": 3868440,
+    "MaxX": 5750270,
+    "MaxY": 3881400,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_150_par_psf4",
+    "MinX": 789920,
+    "MinY": 990560,
+    "MaxX": 800130,
+    "MaxY": 1001070,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_151_par_psf4",
+    "MinX": 1224230,
+    "MinY": 982580,
+    "MaxX": 1234480,
+    "MaxY": 993090,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_152_par_psf4",
+    "MinX": 2024910,
+    "MinY": 950660,
+    "MaxX": 2035280,
+    "MaxY": 961170,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_153_par_psf4",
+    "MinX": 563310,
+    "MinY": 1054400,
+    "MaxX": 573680,
+    "MaxY": 1064910,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_154_par_psf4",
+    "MinX": 657750,
+    "MinY": 1190060,
+    "MaxX": 668180,
+    "MaxY": 1200570,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_155_par_psf4",
+    "MinX": 809910,
+    "MinY": 1182080,
+    "MaxX": 820150,
+    "MaxY": 1192590,
+    "Status": "0",
+    "Error": "M2_21;M2_41;V2_33",
+    "User": ""
+}, {
+    "Clip": "clip_156_par_psf4",
+    "MinX": 617350,
+    "MinY": 1150160,
+    "MaxX": 627580,
+    "MaxY": 1160670,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_157_par_psf4",
+    "MinX": 936220,
+    "MinY": 1142180,
+    "MaxX": 946610,
+    "MaxY": 1152690,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_158_par_psf4",
+    "MinX": 1028310,
+    "MinY": 1309760,
+    "MaxX": 1038550,
+    "MaxY": 1320270,
+    "Status": "1",
+    "Error": "M2_21;M2_41;V2_33",
+    "User": "user1"
+}, {
+    "Clip": "clip_159_par_psf4",
+    "MinX": 976950,
+    "MinY": 1285820,
+    "MaxX": 987380,
+    "MaxY": 1296330,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_15_par_psf4",
+    "MinX": 5337720,
+    "MinY": 3868440,
+    "MaxX": 5347920,
+    "MaxY": 3881400,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_160_par_psf4",
+    "MinX": 897020,
+    "MinY": 1277840,
+    "MaxX": 907250,
+    "MaxY": 1288350,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_161_par_psf4",
+    "MinX": 206310,
+    "MinY": 1413500,
+    "MaxX": 216680,
+    "MaxY": 1424010,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_162_par_psf4",
+    "MinX": 1080430,
+    "MinY": 1365620,
+    "MaxX": 1090980,
+    "MaxY": 1376130,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_163_par_psf4",
+    "MinX": 607350,
+    "MinY": 1357640,
+    "MaxX": 617780,
+    "MaxY": 1368150,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_164_par_psf4",
+    "MinX": 1079910,
+    "MinY": 1341680,
+    "MaxX": 1090280,
+    "MaxY": 1352190,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_165_par_psf4",
+    "MinX": 443410,
+    "MinY": 1341680,
+    "MaxX": 468680,
+    "MaxY": 1352320,
+    "Status": "1",
+    "Error": "M2_41;V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_166_par_psf4",
+    "MinX": 290830,
+    "MinY": 1501280,
+    "MaxX": 301380,
+    "MaxY": 1511790,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_167_par_psf4",
+    "MinX": 855150,
+    "MinY": 1469360,
+    "MaxX": 865580,
+    "MaxY": 1479870,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_168_par_psf4",
+    "MinX": 1584430,
+    "MinY": 1461380,
+    "MaxX": 1594980,
+    "MaxY": 1471890,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_169_par_psf4",
+    "MinX": 1157550,
+    "MinY": 1461380,
+    "MaxX": 1167980,
+    "MaxY": 1471890,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_16_par_psf4",
+    "MinX": 5740070,
+    "MinY": 3836520,
+    "MaxX": 5750270,
+    "MaxY": 3849480,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_170_par_psf4",
+    "MinX": 447620,
+    "MinY": 1437440,
+    "MaxX": 457850,
+    "MaxY": 1447950,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_171_par_psf4",
+    "MinX": 90790,
+    "MinY": 1437440,
+    "MaxX": 101180,
+    "MaxY": 1447950,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_172_par_psf4",
+    "MinX": 122310,
+    "MinY": 1421480,
+    "MaxX": 132680,
+    "MaxY": 1431990,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_173_par_psf4",
+    "MinX": 649220,
+    "MinY": 1605020,
+    "MaxX": 659450,
+    "MaxY": 1615530,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_174_par_psf4",
+    "MinX": 684550,
+    "MinY": 1565120,
+    "MaxX": 694780,
+    "MaxY": 1575630,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_175_par_psf4",
+    "MinX": 303420,
+    "MinY": 1549160,
+    "MaxX": 313970,
+    "MaxY": 1559670,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_176_par_psf4",
+    "MinX": 1123430,
+    "MinY": 1533200,
+    "MaxX": 1133680,
+    "MaxY": 1543710,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_177_par_psf4",
+    "MinX": 1453710,
+    "MinY": 1517240,
+    "MaxX": 1464080,
+    "MaxY": 1527750,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_178_par_psf4",
+    "MinX": 1396950,
+    "MinY": 1517240,
+    "MaxX": 1407380,
+    "MaxY": 1527750,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_179_par_psf4",
+    "MinX": 781710,
+    "MinY": 1685240,
+    "MaxX": 809460,
+    "MaxY": 1703310,
+    "Status": "2",
+    "Error": "M2_41;V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_17_par_psf4",
+    "MinX": 5337720,
+    "MinY": 3836520,
+    "MaxX": 5347920,
+    "MaxY": 3849480,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_180_par_psf4",
+    "MinX": 362920,
+    "MinY": 1668860,
+    "MaxX": 373330,
+    "MaxY": 1679370,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_181_par_psf4",
+    "MinX": 206310,
+    "MinY": 1660880,
+    "MaxX": 216680,
+    "MaxY": 1671390,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_182_par_psf4",
+    "MinX": 836270,
+    "MinY": 1636940,
+    "MaxX": 846680,
+    "MaxY": 1647450,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_183_par_psf4",
+    "MinX": 1433230,
+    "MinY": 1772600,
+    "MaxX": 1443780,
+    "MaxY": 1783110,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_184_par_psf4",
+    "MinX": 43030,
+    "MinY": 1772600,
+    "MaxX": 53580,
+    "MaxY": 1783110,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_185_par_psf4",
+    "MinX": 1362830,
+    "MinY": 1748660,
+    "MaxX": 1373080,
+    "MaxY": 1759170,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_186_par_psf4",
+    "MinX": 918310,
+    "MinY": 1748660,
+    "MaxX": 929980,
+    "MaxY": 1767280,
+    "Status": "1",
+    "Error": "M2_21;M2_41;V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_187_par_psf4",
+    "MinX": 348920,
+    "MinY": 1732700,
+    "MaxX": 359130,
+    "MaxY": 1743210,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_188_par_psf4",
+    "MinX": 86550,
+    "MinY": 1732700,
+    "MaxX": 96980,
+    "MaxY": 1743210,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_189_par_psf4",
+    "MinX": 936550,
+    "MinY": 1724720,
+    "MaxX": 946780,
+    "MaxY": 1735230,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_18_par_psf4",
+    "MinX": 5740070,
+    "MinY": 3804600,
+    "MaxX": 5750270,
+    "MaxY": 3817560,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_190_par_psf4",
+    "MinX": 684550,
+    "MinY": 1716740,
+    "MaxX": 696020,
+    "MaxY": 1735360,
+    "Status": "2",
+    "Error": "M2_21;M2_41;V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_191_par_psf4",
+    "MinX": 262470,
+    "MinY": 1708760,
+    "MaxX": 272680,
+    "MaxY": 1719270,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_192_par_psf4",
+    "MinX": 789900,
+    "MinY": 1876340,
+    "MaxX": 813620,
+    "MaxY": 1910920,
+    "Status": "0",
+    "Error": "M2_41;V2_152;V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_193_par_psf4",
+    "MinX": 1000110,
+    "MinY": 1820900,
+    "MaxX": 1024810,
+    "MaxY": 1847080,
+    "Status": "2",
+    "Error": "M2_41;V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_194_par_psf4",
+    "MinX": 163750,
+    "MinY": 1964120,
+    "MaxX": 173980,
+    "MaxY": 1974630,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_195_par_psf4",
+    "MinX": 279620,
+    "MinY": 1956140,
+    "MaxX": 289850,
+    "MaxY": 1966650,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_196_par_psf4",
+    "MinX": 46150,
+    "MinY": 1956140,
+    "MaxX": 56380,
+    "MaxY": 1966650,
+    "Status": "0",
+    "Error": "M2_21;M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_197_par_psf4",
+    "MinX": 256710,
+    "MinY": 1932200,
+    "MaxX": 267080,
+    "MaxY": 1942710,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_198_par_psf4",
+    "MinX": 10820,
+    "MinY": 1916240,
+    "MaxX": 21050,
+    "MaxY": 1926750,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_199_par_psf4",
+    "MinX": 674080,
+    "MinY": 2044340,
+    "MaxX": 789910,
+    "MaxY": 2139160,
+    "Status": "2",
+    "Error": "M1_81;M2_41;V2_152;V2_32;V3_152;V3_24",
+    "User": "user2"
+}, {
+    "Clip": "clip_19_par_psf4",
+    "MinX": 5337720,
+    "MinY": 3804600,
+    "MaxX": 5347920,
+    "MaxY": 3817560,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user2"
+}, {
+    "Clip": "clip_1_par_psf4",
+    "MinX": 3736540,
+    "MinY": 1683760,
+    "MaxX": 3771940,
+    "MaxY": 1713620,
+    "Status": "1",
+    "Error": "M3_21;M3_22;M3_42;M3_44;M5BB_22;M5BB_33;M5BB_34;M5BB_34/35_INFO;M5BC_21;M5_128;M5_21;M5_44;M7_21/22/26/27/37;M7_37;V2_24;V3_33;V5_26;V5_33",
+    "User": "user2"
+}, {
+    "Clip": "clip_200_par_psf4",
+    "MinX": 305910,
+    "MinY": 2019980,
+    "MaxX": 316150,
+    "MaxY": 2030490,
+    "Status": "2",
+    "Error": "M2_21;M2_41;V2_33",
+    "User": "user3"
+}, {
+    "Clip": "clip_201_par_psf4",
+    "MinX": 692310,
+    "MinY": 2171600,
+    "MaxX": 705610,
+    "MaxY": 2182240,
+    "Status": "1",
+    "Error": "M2_21;M2_41;V2_32;V2_33",
+    "User": "user1"
+}, {
+    "Clip": "clip_202_par_psf4",
+    "MinX": 156430,
+    "MinY": 2123720,
+    "MaxX": 166980,
+    "MaxY": 2134230,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_203_par_psf4",
+    "MinX": 42510,
+    "MinY": 2107760,
+    "MaxX": 52880,
+    "MaxY": 2118270,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_204_par_psf4",
+    "MinX": 1160980,
+    "MinY": 2259380,
+    "MaxX": 1182680,
+    "MaxY": 2278000,
+    "Status": "0",
+    "Error": "M2_41;V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_205_par_psf4",
+    "MinX": 922350,
+    "MinY": 2259380,
+    "MaxX": 932780,
+    "MaxY": 2269890,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_206_par_psf4",
+    "MinX": 2172430,
+    "MinY": 2235440,
+    "MaxX": 2182980,
+    "MaxY": 2245950,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_207_par_psf4",
+    "MinX": 279000,
+    "MinY": 2195960,
+    "MaxX": 294380,
+    "MaxY": 2222010,
+    "Status": "0",
+    "Error": "M2_41;V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_208_par_psf4",
+    "MinX": 792150,
+    "MinY": 2195540,
+    "MaxX": 802580,
+    "MaxY": 2206050,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_209_par_psf4",
+    "MinX": 86030,
+    "MinY": 2195540,
+    "MaxX": 96280,
+    "MaxY": 2206050,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_20_par_psf4",
+    "MinX": 5740070,
+    "MinY": 3964200,
+    "MaxX": 5750270,
+    "MaxY": 3977160,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_210_par_psf4",
+    "MinX": 17270,
+    "MinY": 2179580,
+    "MaxX": 27680,
+    "MaxY": 2190090,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_211_par_psf4",
+    "MinX": 1074820,
+    "MinY": 2355140,
+    "MaxX": 1085210,
+    "MaxY": 2365650,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_212_par_psf4",
+    "MinX": 46670,
+    "MinY": 2347160,
+    "MaxX": 57080,
+    "MaxY": 2357670,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_213_par_psf4",
+    "MinX": 6270,
+    "MinY": 2347160,
+    "MaxX": 16480,
+    "MaxY": 2357670,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_214_par_psf4",
+    "MinX": 126510,
+    "MinY": 2339180,
+    "MaxX": 136880,
+    "MaxY": 2349690,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_215_par_psf4",
+    "MinX": 1248430,
+    "MinY": 2315240,
+    "MaxX": 1258980,
+    "MaxY": 2325750,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_216_par_psf4",
+    "MinX": 729010,
+    "MinY": 2267780,
+    "MaxX": 754280,
+    "MaxY": 2293830,
+    "Status": "1",
+    "Error": "M2_41;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_217_par_psf4",
+    "MinX": 2190270,
+    "MinY": 2426960,
+    "MaxX": 2200480,
+    "MaxY": 2437470,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_218_par_psf4",
+    "MinX": 236220,
+    "MinY": 2411000,
+    "MaxX": 246770,
+    "MaxY": 2421510,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_219_par_psf4",
+    "MinX": 691350,
+    "MinY": 2379080,
+    "MaxX": 705000,
+    "MaxY": 2389720,
+    "Status": "1",
+    "Error": "M2_41;V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_21_par_psf4",
+    "MinX": 5337720,
+    "MinY": 3964200,
+    "MaxX": 5347920,
+    "MaxY": 3977160,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_220_par_psf4",
+    "MinX": 2102030,
+    "MinY": 2514740,
+    "MaxX": 2112280,
+    "MaxY": 2525250,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_221_par_psf4",
+    "MinX": 163750,
+    "MinY": 2482820,
+    "MaxX": 173980,
+    "MaxY": 2493330,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_222_par_psf4",
+    "MinX": 2022270,
+    "MinY": 2610500,
+    "MaxX": 2032480,
+    "MaxY": 2621010,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_223_par_psf4",
+    "MinX": 2084920,
+    "MinY": 2594540,
+    "MaxX": 2095290,
+    "MaxY": 2605050,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_224_par_psf4",
+    "MinX": 180550,
+    "MinY": 2586560,
+    "MaxX": 190780,
+    "MaxY": 2597070,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_225_par_psf4",
+    "MinX": 470720,
+    "MinY": 2578580,
+    "MaxX": 480930,
+    "MaxY": 2589090,
+    "Status": "0",
+    "Error": "M2_21;M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_226_par_psf4",
+    "MinX": 122830,
+    "MinY": 2578580,
+    "MaxX": 133380,
+    "MaxY": 2589090,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_227_par_psf4",
+    "MinX": 2148750,
+    "MinY": 2562620,
+    "MaxX": 2159180,
+    "MaxY": 2573130,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_228_par_psf4",
+    "MinX": 151670,
+    "MinY": 2554640,
+    "MaxX": 162080,
+    "MaxY": 2565150,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_229_par_psf4",
+    "MinX": 299130,
+    "MinY": 2738180,
+    "MaxX": 309380,
+    "MaxY": 2748690,
+    "Status": "1",
+    "Error": "M2_21;M2_41;V2_33",
+    "User": "user2"
+}, {
+    "Clip": "clip_22_par_psf4",
+    "MinX": 5740070,
+    "MinY": 3932280,
+    "MaxX": 5750270,
+    "MaxY": 3945240,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_230_par_psf4",
+    "MinX": 5419030,
+    "MinY": 2722220,
+    "MaxX": 5429580,
+    "MaxY": 2732730,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_231_par_psf4",
+    "MinX": 3380310,
+    "MinY": 2690300,
+    "MaxX": 3410780,
+    "MaxY": 2716770,
+    "Status": "0",
+    "Error": "M2_21;M2_41;V2_33",
+    "User": ""
+}, {
+    "Clip": "clip_232_par_psf4",
+    "MinX": 3712420,
+    "MinY": 2682320,
+    "MaxX": 3722810,
+    "MaxY": 2692830,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_233_par_psf4",
+    "MinX": 493470,
+    "MinY": 2682320,
+    "MaxX": 503680,
+    "MaxY": 2692830,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_234_par_psf4",
+    "MinX": 380590,
+    "MinY": 2674340,
+    "MaxX": 390980,
+    "MaxY": 2684850,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_235_par_psf4",
+    "MinX": 250350,
+    "MinY": 2650400,
+    "MaxX": 260780,
+    "MaxY": 2660910,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_236_par_psf4",
+    "MinX": 625110,
+    "MinY": 2817980,
+    "MaxX": 635350,
+    "MaxY": 2828490,
+    "Status": "2",
+    "Error": "M2_21;M2_41;V2_33",
+    "User": "user2"
+}, {
+    "Clip": "clip_237_par_psf4",
+    "MinX": 3313110,
+    "MinY": 2786060,
+    "MaxX": 3323350,
+    "MaxY": 2796570,
+    "Status": "2",
+    "Error": "M2_21;M2_41;V2_33",
+    "User": "user1"
+}, {
+    "Clip": "clip_238_par_psf4",
+    "MinX": 324430,
+    "MinY": 2786060,
+    "MaxX": 334980,
+    "MaxY": 2796570,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_239_par_psf4",
+    "MinX": 5354950,
+    "MinY": 2762120,
+    "MaxX": 5365180,
+    "MaxY": 2772630,
+    "Status": "0",
+    "Error": "M2_21;M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_23_par_psf4",
+    "MinX": 5337720,
+    "MinY": 3932280,
+    "MaxX": 5347920,
+    "MaxY": 3945240,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_240_par_psf4",
+    "MinX": 488220,
+    "MinY": 2762120,
+    "MaxX": 498770,
+    "MaxY": 2772630,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_241_par_psf4",
+    "MinX": 3603920,
+    "MinY": 2746160,
+    "MaxX": 3614170,
+    "MaxY": 2756670,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_242_par_psf4",
+    "MinX": 1619070,
+    "MinY": 2889800,
+    "MaxX": 1629280,
+    "MaxY": 2900310,
+    "Status": "0",
+    "Error": "M2_21;M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_243_par_psf4",
+    "MinX": 283950,
+    "MinY": 2889800,
+    "MaxX": 294380,
+    "MaxY": 2900310,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_244_par_psf4",
+    "MinX": 5531020,
+    "MinY": 2865860,
+    "MaxX": 5541450,
+    "MaxY": 2876370,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_245_par_psf4",
+    "MinX": 3532710,
+    "MinY": 2865860,
+    "MaxX": 3543080,
+    "MaxY": 2876370,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_246_par_psf4",
+    "MinX": 2087910,
+    "MinY": 2865860,
+    "MaxX": 2098280,
+    "MaxY": 2876370,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_247_par_psf4",
+    "MinX": 272310,
+    "MinY": 2857880,
+    "MaxX": 282550,
+    "MaxY": 2868390,
+    "Status": "1",
+    "Error": "M2_21;M2_41;V2_33",
+    "User": "user1"
+}, {
+    "Clip": "clip_248_par_psf4",
+    "MinX": 2187510,
+    "MinY": 3017480,
+    "MaxX": 2197750,
+    "MaxY": 3027990,
+    "Status": "2",
+    "Error": "M2_21;M2_41;V2_33",
+    "User": "user2"
+}, {
+    "Clip": "clip_249_par_psf4",
+    "MinX": 3055430,
+    "MinY": 3001520,
+    "MaxX": 3065680,
+    "MaxY": 3012030,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_24_par_psf4",
+    "MinX": 5740070,
+    "MinY": 3900360,
+    "MaxX": 5750270,
+    "MaxY": 3913320,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user2"
+}, {
+    "Clip": "clip_250_par_psf4",
+    "MinX": 3196710,
+    "MinY": 2985560,
+    "MaxX": 3207080,
+    "MaxY": 2996070,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_251_par_psf4",
+    "MinX": 3264430,
+    "MinY": 3080280,
+    "MaxX": 3274980,
+    "MaxY": 3090790,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_252_par_psf4",
+    "MinX": 2173120,
+    "MinY": 3081320,
+    "MaxX": 2183530,
+    "MaxY": 3091830,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_253_par_psf4",
+    "MinX": 3364710,
+    "MinY": 3073340,
+    "MaxX": 3375080,
+    "MaxY": 3083850,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_254_par_psf4",
+    "MinX": 4544910,
+    "MinY": 3161120,
+    "MaxX": 4555280,
+    "MaxY": 3171630,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_255_par_psf4",
+    "MinX": 2072320,
+    "MinY": 3145160,
+    "MaxX": 2082730,
+    "MaxY": 3155670,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_256_par_psf4",
+    "MinX": 5441550,
+    "MinY": 3296780,
+    "MaxX": 5451980,
+    "MaxY": 3307290,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_257_par_psf4",
+    "MinX": 1378070,
+    "MinY": 3264860,
+    "MaxX": 1388480,
+    "MaxY": 3275370,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_258_par_psf4",
+    "MinX": 2110470,
+    "MinY": 3240920,
+    "MaxX": 2120680,
+    "MaxY": 3251430,
+    "Status": "0",
+    "Error": "M2_21;M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_259_par_psf4",
+    "MinX": 5655270,
+    "MinY": 3232940,
+    "MaxX": 5665480,
+    "MaxY": 3243450,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_25_par_psf4",
+    "MinX": 5337720,
+    "MinY": 3900360,
+    "MaxX": 5347920,
+    "MaxY": 3913320,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_260_par_psf4",
+    "MinX": 2961510,
+    "MinY": 3232940,
+    "MaxX": 2971880,
+    "MaxY": 3243450,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_261_par_psf4",
+    "MinX": 2080020,
+    "MinY": 3232940,
+    "MaxX": 2090570,
+    "MaxY": 3243450,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_262_par_psf4",
+    "MinX": 2148230,
+    "MinY": 3400520,
+    "MaxX": 2158480,
+    "MaxY": 3411030,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_263_par_psf4",
+    "MinX": 4668230,
+    "MinY": 3384560,
+    "MaxX": 4678480,
+    "MaxY": 3395070,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_264_par_psf4",
+    "MinX": 1835910,
+    "MinY": 3368600,
+    "MaxX": 1846280,
+    "MaxY": 3379110,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_265_par_psf4",
+    "MinX": 5168070,
+    "MinY": 3312740,
+    "MaxX": 5178280,
+    "MaxY": 3323250,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_266_par_psf4",
+    "MinX": 5739270,
+    "MinY": 3496280,
+    "MaxX": 5749480,
+    "MaxY": 3506790,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_267_par_psf4",
+    "MinX": 2109430,
+    "MinY": 3488300,
+    "MaxX": 2119980,
+    "MaxY": 3498810,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_268_par_psf4",
+    "MinX": 2159830,
+    "MinY": 3448400,
+    "MaxX": 2170380,
+    "MaxY": 3458910,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_269_par_psf4",
+    "MinX": 2190790,
+    "MinY": 3432440,
+    "MaxX": 2201180,
+    "MaxY": 3442950,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_26_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4059960,
+    "MaxX": 5750270,
+    "MaxY": 4072920,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_270_par_psf4",
+    "MinX": 3461270,
+    "MinY": 3576080,
+    "MaxX": 3471680,
+    "MaxY": 3586590,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_271_par_psf4",
+    "MinX": 5670510,
+    "MinY": 3552140,
+    "MaxX": 5680880,
+    "MaxY": 3562650,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_272_par_psf4",
+    "MinX": 5330830,
+    "MinY": 3544160,
+    "MaxX": 5341380,
+    "MaxY": 3554670,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_273_par_psf4",
+    "MinX": 1370230,
+    "MinY": 3759620,
+    "MaxX": 1380780,
+    "MaxY": 3770130,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_274_par_psf4",
+    "MinX": 4353750,
+    "MinY": 3727700,
+    "MaxX": 4364180,
+    "MaxY": 3738210,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_275_par_psf4",
+    "MinX": 4054030,
+    "MinY": 3823460,
+    "MaxX": 4064580,
+    "MaxY": 3833970,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_276_par_psf4",
+    "MinX": 4395270,
+    "MinY": 3975080,
+    "MaxX": 4405480,
+    "MaxY": 3985590,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_277_par_psf4",
+    "MinX": 4324390,
+    "MinY": 3967100,
+    "MaxX": 4334780,
+    "MaxY": 3977610,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_278_par_psf4",
+    "MinX": 1367070,
+    "MinY": 3943160,
+    "MaxX": 1377280,
+    "MaxY": 3953670,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_279_par_psf4",
+    "MinX": 4546470,
+    "MinY": 3927200,
+    "MaxX": 4556680,
+    "MaxY": 3937710,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_27_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4059960,
+    "MaxX": 5347920,
+    "MaxY": 4072920,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_280_par_psf4",
+    "MinX": 4210470,
+    "MinY": 3895280,
+    "MaxX": 4220680,
+    "MaxY": 3905790,
+    "Status": "0",
+    "Error": "M2_21;M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_281_par_psf4",
+    "MinX": 1176320,
+    "MinY": 4062860,
+    "MaxX": 1186530,
+    "MaxY": 4073370,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_282_par_psf4",
+    "MinX": 1362830,
+    "MinY": 4030940,
+    "MaxX": 1376460,
+    "MaxY": 4065520,
+    "Status": "1",
+    "Error": "M2_41;V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_283_par_psf4",
+    "MinX": 1074820,
+    "MinY": 3991040,
+    "MaxX": 1085210,
+    "MaxY": 4001550,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_284_par_psf4",
+    "MinX": 4012140,
+    "MinY": 4127120,
+    "MaxX": 4064460,
+    "MaxY": 4217140,
+    "Status": "2",
+    "Error": "M2_21;M2_41;V2_152;V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_285_par_psf4",
+    "MinX": 1339750,
+    "MinY": 4142660,
+    "MaxX": 1349980,
+    "MaxY": 4153170,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_286_par_psf4",
+    "MinX": 4216750,
+    "MinY": 4134680,
+    "MaxX": 4226980,
+    "MaxY": 4145190,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_287_par_psf4",
+    "MinX": 4553270,
+    "MinY": 4126700,
+    "MaxX": 4563680,
+    "MaxY": 4137210,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_288_par_psf4",
+    "MinX": 4418020,
+    "MinY": 4126700,
+    "MaxX": 4428410,
+    "MaxY": 4137210,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_289_par_psf4",
+    "MinX": 2984590,
+    "MinY": 4118720,
+    "MaxX": 2994980,
+    "MaxY": 4129230,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_28_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4028040,
+    "MaxX": 5750270,
+    "MaxY": 4041000,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user2"
+}, {
+    "Clip": "clip_290_par_psf4",
+    "MinX": 4016920,
+    "MinY": 4102760,
+    "MaxX": 4027290,
+    "MaxY": 4113270,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_291_par_psf4",
+    "MinX": 1366030,
+    "MinY": 4102760,
+    "MaxX": 1376580,
+    "MaxY": 4113270,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_292_par_psf4",
+    "MinX": 3021830,
+    "MinY": 4086800,
+    "MaxX": 3032080,
+    "MaxY": 4097310,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_293_par_psf4",
+    "MinX": 1396430,
+    "MinY": 4086800,
+    "MaxX": 1406680,
+    "MaxY": 4097310,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_294_par_psf4",
+    "MinX": 3406670,
+    "MinY": 4078820,
+    "MaxX": 3417080,
+    "MaxY": 4089330,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_295_par_psf4",
+    "MinX": 1085670,
+    "MinY": 4078820,
+    "MaxX": 1095880,
+    "MaxY": 4089330,
+    "Status": "0",
+    "Error": "M2_21;M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_296_par_psf4",
+    "MinX": 4452320,
+    "MinY": 4254380,
+    "MaxX": 4462530,
+    "MaxY": 4264890,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_297_par_psf4",
+    "MinX": 4271910,
+    "MinY": 4246400,
+    "MaxX": 4282280,
+    "MaxY": 4256910,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_298_par_psf4",
+    "MinX": 3811480,
+    "MinY": 4246400,
+    "MaxX": 3829930,
+    "MaxY": 4265020,
+    "Status": "1",
+    "Error": "M2_41;V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_299_par_psf4",
+    "MinX": 1520910,
+    "MinY": 4230440,
+    "MaxX": 1531280,
+    "MaxY": 4240950,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_29_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4028040,
+    "MaxX": 5347920,
+    "MaxY": 4041000,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_2_par_psf4",
+    "MinX": 5332540,
+    "MinY": 1138600,
+    "MaxX": 5352260,
+    "MaxY": 1152920,
+    "Status": "2",
+    "Error": "M7_21/22/26/27/37;M7_37",
+    "User": "user3"
+}, {
+    "Clip": "clip_300_par_psf4",
+    "MinX": 4171110,
+    "MinY": 4222460,
+    "MaxX": 4181480,
+    "MaxY": 4232970,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_301_par_psf4",
+    "MinX": 4198350,
+    "MinY": 4214480,
+    "MaxX": 4208780,
+    "MaxY": 4224990,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_302_par_psf4",
+    "MinX": 3225550,
+    "MinY": 4214480,
+    "MaxX": 3235780,
+    "MaxY": 4224990,
+    "Status": "0",
+    "Error": "M2_21;M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_303_par_psf4",
+    "MinX": 4328070,
+    "MinY": 4190540,
+    "MaxX": 4338280,
+    "MaxY": 4201050,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_304_par_psf4",
+    "MinX": 1161750,
+    "MinY": 4190540,
+    "MaxX": 1172180,
+    "MaxY": 4201050,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_305_par_psf4",
+    "MinX": 3960220,
+    "MinY": 4318640,
+    "MaxX": 4010190,
+    "MaxY": 4360650,
+    "Status": "1",
+    "Error": "M1_81;M2_41;V2_152;V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_306_par_psf4",
+    "MinX": 3820220,
+    "MinY": 4342160,
+    "MaxX": 3830450,
+    "MaxY": 4352670,
+    "Status": "0",
+    "Error": "M2_21;M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_307_par_psf4",
+    "MinX": 916110,
+    "MinY": 4302260,
+    "MaxX": 926480,
+    "MaxY": 4312770,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_308_par_psf4",
+    "MinX": 3958200,
+    "MinY": 4278740,
+    "MaxX": 3976370,
+    "MaxY": 4296940,
+    "Status": "2",
+    "Error": "M2_41;V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_309_par_psf4",
+    "MinX": 3923310,
+    "MinY": 4286300,
+    "MaxX": 3938420,
+    "MaxY": 4296940,
+    "Status": "1",
+    "Error": "M2_41;V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_30_par_psf4",
+    "MinX": 5740070,
+    "MinY": 3996120,
+    "MaxX": 5750270,
+    "MaxY": 4009080,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_310_par_psf4",
+    "MinX": 3033350,
+    "MinY": 4286300,
+    "MaxX": 3043600,
+    "MaxY": 4296810,
+    "Status": "0",
+    "Error": "M2_21;M2_41;V2_33",
+    "User": ""
+}, {
+    "Clip": "clip_311_par_psf4",
+    "MinX": 1497230,
+    "MinY": 4286300,
+    "MaxX": 1507480,
+    "MaxY": 4296810,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_312_par_psf4",
+    "MinX": 779070,
+    "MinY": 4270340,
+    "MaxX": 789280,
+    "MaxY": 4280850,
+    "Status": "1",
+    "Error": "M2_21;M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_313_par_psf4",
+    "MinX": 3083830,
+    "MinY": 4398020,
+    "MaxX": 3094380,
+    "MaxY": 4408530,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_314_par_psf4",
+    "MinX": 1193270,
+    "MinY": 4390040,
+    "MaxX": 1203680,
+    "MaxY": 4400550,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_315_par_psf4",
+    "MinX": 1179510,
+    "MinY": 4541660,
+    "MaxX": 1189750,
+    "MaxY": 4552170,
+    "Status": "1",
+    "Error": "M2_21;M2_41;V2_33",
+    "User": "user3"
+}, {
+    "Clip": "clip_316_par_psf4",
+    "MinX": 1086020,
+    "MinY": 4533680,
+    "MaxX": 1096250,
+    "MaxY": 4544190,
+    "Status": "2",
+    "Error": "M2_21;M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_317_par_psf4",
+    "MinX": 3830870,
+    "MinY": 4509740,
+    "MaxX": 3841280,
+    "MaxY": 4520250,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_318_par_psf4",
+    "MinX": 1604910,
+    "MinY": 4509740,
+    "MaxX": 1615280,
+    "MaxY": 4520250,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_319_par_psf4",
+    "MinX": 1363350,
+    "MinY": 4501760,
+    "MaxX": 1373780,
+    "MaxY": 4512270,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_31_par_psf4",
+    "MinX": 5337720,
+    "MinY": 3996120,
+    "MaxX": 5347920,
+    "MaxY": 4009080,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_320_par_psf4",
+    "MinX": 3280710,
+    "MinY": 4493780,
+    "MaxX": 3291080,
+    "MaxY": 4504290,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_321_par_psf4",
+    "MinX": 1420630,
+    "MinY": 4493780,
+    "MaxX": 1431180,
+    "MaxY": 4504290,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_322_par_psf4",
+    "MinX": 3824590,
+    "MinY": 4477820,
+    "MaxX": 3834980,
+    "MaxY": 4488330,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user3"
+}, {
+    "Clip": "clip_323_par_psf4",
+    "MinX": 1341830,
+    "MinY": 4477820,
+    "MaxX": 1352080,
+    "MaxY": 4488330,
+    "Status": "1",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_324_par_psf4",
+    "MinX": 3238150,
+    "MinY": 4461860,
+    "MaxX": 3248380,
+    "MaxY": 4472370,
+    "Status": "0",
+    "Error": "M2_21;M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_325_par_psf4",
+    "MinX": 1175620,
+    "MinY": 4453880,
+    "MaxX": 1186010,
+    "MaxY": 4464390,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_326_par_psf4",
+    "MinX": 1026830,
+    "MinY": 4453880,
+    "MaxX": 1037080,
+    "MaxY": 4464390,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_327_par_psf4",
+    "MinX": 1037020,
+    "MinY": 4613480,
+    "MaxX": 1047410,
+    "MaxY": 4623990,
+    "Status": "2",
+    "Error": "M2_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_328_par_psf4",
+    "MinX": 1527150,
+    "MinY": 4581560,
+    "MaxX": 1537580,
+    "MaxY": 4592070,
+    "Status": "0",
+    "Error": "M2_41",
+    "User": ""
+}, {
+    "Clip": "clip_329_par_psf4",
+    "MinX": 1579590,
+    "MinY": 1073280,
+    "MaxX": 1590010,
+    "MaxY": 1083840,
+    "Status": "0",
+    "Error": "V0_22;V0_24;V0_25",
+    "User": ""
+}, {
+    "Clip": "clip_32_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4155720,
+    "MaxX": 5750270,
+    "MaxY": 4168680,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user2"
+}, {
+    "Clip": "clip_330_par_psf4",
+    "MinX": 3935790,
+    "MinY": 3370330,
+    "MaxX": 3946210,
+    "MaxY": 3380750,
+    "Status": "2",
+    "Error": "V0_24;V0_25",
+    "User": "user2"
+}, {
+    "Clip": "clip_331_par_psf4",
+    "MinX": 3742560,
+    "MinY": 637760,
+    "MaxX": 3754670,
+    "MaxY": 648280,
+    "Status": "2",
+    "Error": "M2_128;M2_138",
+    "User": "user1"
+}, {
+    "Clip": "clip_332_par_psf4",
+    "MinX": 4838530,
+    "MinY": 596600,
+    "MaxX": 4850480,
+    "MaxY": 607120,
+    "Status": "1",
+    "Error": "M2_128;M2_138",
+    "User": "user2"
+}, {
+    "Clip": "clip_333_par_psf4",
+    "MinX": 3165340,
+    "MinY": 612670,
+    "MaxX": 3194690,
+    "MaxY": 630940,
+    "Status": "1",
+    "Error": "M1_81;M3_128;M3_138",
+    "User": "user2"
+}, {
+    "Clip": "clip_334_par_psf4",
+    "MinX": 3745740,
+    "MinY": 1933470,
+    "MaxX": 3756260,
+    "MaxY": 1945750,
+    "Status": "0",
+    "Error": "M3_128;M3_138",
+    "User": ""
+}, {
+    "Clip": "clip_335_par_psf4",
+    "MinX": 3956530,
+    "MinY": 638000,
+    "MaxX": 3968170,
+    "MaxY": 648280,
+    "Status": "0",
+    "Error": "M2_138",
+    "User": ""
+}, {
+    "Clip": "clip_336_par_psf4",
+    "MinX": 3499400,
+    "MinY": 636500,
+    "MaxX": 3524480,
+    "MaxY": 646900,
+    "Status": "0",
+    "Error": "M1_81;M2_138",
+    "User": ""
+}, {
+    "Clip": "clip_337_par_psf4",
+    "MinX": 3131600,
+    "MinY": 598100,
+    "MaxX": 3143760,
+    "MaxY": 608380,
+    "Status": "1",
+    "Error": "M2_138",
+    "User": "user1"
+}, {
+    "Clip": "clip_338_par_psf4",
+    "MinX": 2410940,
+    "MinY": 1119630,
+    "MaxX": 2421220,
+    "MaxY": 1130740,
+    "Status": "2",
+    "Error": "M3_138",
+    "User": "user2"
+}, {
+    "Clip": "clip_339_par_psf4",
+    "MinX": 2400380,
+    "MinY": 1061780,
+    "MaxX": 2410660,
+    "MaxY": 1073610,
+    "Status": "0",
+    "Error": "M3_138",
+    "User": ""
+}, {
+    "Clip": "clip_33_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4155720,
+    "MaxX": 5347920,
+    "MaxY": 4168680,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_340_par_psf4",
+    "MinX": 2400380,
+    "MinY": 1188270,
+    "MaxX": 2410660,
+    "MaxY": 1200250,
+    "Status": "1",
+    "Error": "M3_138",
+    "User": "user3"
+}, {
+    "Clip": "clip_341_par_psf4",
+    "MinX": 3736540,
+    "MinY": 1255580,
+    "MaxX": 3746820,
+    "MaxY": 1267500,
+    "Status": "1",
+    "Error": "M3_138",
+    "User": "user2"
+}, {
+    "Clip": "clip_342_par_psf4",
+    "MinX": 730940,
+    "MinY": 1457980,
+    "MaxX": 758780,
+    "MaxY": 1484470,
+    "Status": "2",
+    "Error": "M3_138;V3_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_343_par_psf4",
+    "MinX": 701500,
+    "MinY": 1755070,
+    "MaxX": 722820,
+    "MaxY": 1769770,
+    "Status": "2",
+    "Error": "M1_81;M3_138",
+    "User": "user1"
+}, {
+    "Clip": "clip_344_par_psf4",
+    "MinX": 3736540,
+    "MinY": 1801690,
+    "MaxX": 3746820,
+    "MaxY": 1813720,
+    "Status": "2",
+    "Error": "M3_138",
+    "User": "user1"
+}, {
+    "Clip": "clip_345_par_psf4",
+    "MinX": 714140,
+    "MinY": 1831260,
+    "MaxX": 724420,
+    "MaxY": 1859390,
+    "Status": "2",
+    "Error": "M3_138",
+    "User": "user3"
+}, {
+    "Clip": "clip_346_par_psf4",
+    "MinX": 226940,
+    "MinY": 1812180,
+    "MaxX": 237220,
+    "MaxY": 1824180,
+    "Status": "0",
+    "Error": "M3_138",
+    "User": ""
+}, {
+    "Clip": "clip_347_par_psf4",
+    "MinX": 3754940,
+    "MinY": 2286490,
+    "MaxX": 3765220,
+    "MaxY": 2298430,
+    "Status": "0",
+    "Error": "M3_138",
+    "User": ""
+}, {
+    "Clip": "clip_348_par_psf4",
+    "MinX": 2394140,
+    "MinY": 2340860,
+    "MaxX": 2404420,
+    "MaxY": 2352730,
+    "Status": "0",
+    "Error": "M3_138",
+    "User": ""
+}, {
+    "Clip": "clip_349_par_psf4",
+    "MinX": 3173180,
+    "MinY": 3875970,
+    "MaxX": 3183460,
+    "MaxY": 3886970,
+    "Status": "2",
+    "Error": "M3_138",
+    "User": "user3"
+}, {
+    "Clip": "clip_34_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4123800,
+    "MaxX": 5750270,
+    "MaxY": 4136760,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_350_par_psf4",
+    "MinX": 1622160,
+    "MinY": 446980,
+    "MaxX": 1632380,
+    "MaxY": 457460,
+    "Status": "0",
+    "Error": "V3_152;V3_24",
+    "User": ""
+}, {
+    "Clip": "clip_351_par_psf4",
+    "MinX": 1487760,
+    "MinY": 510820,
+    "MaxX": 1497980,
+    "MaxY": 521300,
+    "Status": "2",
+    "Error": "V3_152;V3_24",
+    "User": "user3"
+}, {
+    "Clip": "clip_352_par_psf4",
+    "MinX": 983760,
+    "MinY": 670420,
+    "MaxX": 993980,
+    "MaxY": 680900,
+    "Status": "1",
+    "Error": "V3_152;V3_24",
+    "User": "user1"
+}, {
+    "Clip": "clip_353_par_psf4",
+    "MinX": 1017360,
+    "MinY": 830020,
+    "MaxX": 1027580,
+    "MaxY": 840500,
+    "Status": "1",
+    "Error": "V3_152;V3_24",
+    "User": "user3"
+}, {
+    "Clip": "clip_354_par_psf4",
+    "MinX": 714960,
+    "MinY": 1101340,
+    "MaxX": 725180,
+    "MaxY": 1111820,
+    "Status": "1",
+    "Error": "V3_152;V3_24",
+    "User": "user1"
+}, {
+    "Clip": "clip_355_par_psf4",
+    "MinX": 412560,
+    "MinY": 1197100,
+    "MaxX": 422780,
+    "MaxY": 1207580,
+    "Status": "1",
+    "Error": "V3_152;V3_24",
+    "User": "user1"
+}, {
+    "Clip": "clip_356_par_psf4",
+    "MinX": 345360,
+    "MinY": 1133260,
+    "MaxX": 355580,
+    "MaxY": 1143740,
+    "Status": "2",
+    "Error": "V3_152;V3_24",
+    "User": "user3"
+}, {
+    "Clip": "clip_357_par_psf4",
+    "MinX": 1084560,
+    "MinY": 1276900,
+    "MaxX": 1094780,
+    "MaxY": 1287380,
+    "Status": "0",
+    "Error": "V3_152;V3_24",
+    "User": ""
+}, {
+    "Clip": "clip_358_par_psf4",
+    "MinX": 1151760,
+    "MinY": 1548220,
+    "MaxX": 1161980,
+    "MaxY": 1558700,
+    "Status": "1",
+    "Error": "V3_152;V3_24",
+    "User": "user2"
+}, {
+    "Clip": "clip_359_par_psf4",
+    "MinX": 976180,
+    "MinY": 1621400,
+    "MaxX": 1007400,
+    "MaxY": 1663540,
+    "Status": "2",
+    "Error": "V2_152;V3_152;V3_24",
+    "User": "user1"
+}, {
+    "Clip": "clip_35_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4123800,
+    "MaxX": 5347920,
+    "MaxY": 4136760,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_360_par_psf4",
+    "MinX": 983760,
+    "MinY": 1995100,
+    "MaxX": 993980,
+    "MaxY": 2005580,
+    "Status": "0",
+    "Error": "V3_152;V3_24",
+    "User": ""
+}, {
+    "Clip": "clip_361_par_psf4",
+    "MinX": 210960,
+    "MinY": 2122780,
+    "MaxX": 221180,
+    "MaxY": 2133260,
+    "Status": "1",
+    "Error": "V3_152;V3_24",
+    "User": "user2"
+}, {
+    "Clip": "clip_362_par_psf4",
+    "MinX": 311760,
+    "MinY": 2553700,
+    "MaxX": 321980,
+    "MaxY": 2564180,
+    "Status": "2",
+    "Error": "V3_152;V3_24",
+    "User": "user1"
+}, {
+    "Clip": "clip_363_par_psf4",
+    "MinX": 143760,
+    "MinY": 2825020,
+    "MaxX": 153980,
+    "MaxY": 2835500,
+    "Status": "2",
+    "Error": "V3_152;V3_24",
+    "User": "user2"
+}, {
+    "Clip": "clip_364_par_psf4",
+    "MinX": 3369360,
+    "MinY": 2888860,
+    "MaxX": 3379580,
+    "MaxY": 2899340,
+    "Status": "2",
+    "Error": "V3_152;V3_24",
+    "User": "user3"
+}, {
+    "Clip": "clip_365_par_psf4",
+    "MinX": 4982160,
+    "MinY": 2840980,
+    "MaxX": 4992380,
+    "MaxY": 2851460,
+    "Status": "0",
+    "Error": "V3_152;V3_24",
+    "User": ""
+}, {
+    "Clip": "clip_366_par_psf4",
+    "MinX": 1118160,
+    "MinY": 2840980,
+    "MaxX": 1128380,
+    "MaxY": 2851460,
+    "Status": "0",
+    "Error": "V3_152;V3_24",
+    "User": ""
+}, {
+    "Clip": "clip_367_par_psf4",
+    "MinX": 412560,
+    "MinY": 3096340,
+    "MaxX": 422780,
+    "MaxY": 3106820,
+    "Status": "2",
+    "Error": "V3_152;V3_24",
+    "User": "user2"
+}, {
+    "Clip": "clip_368_par_psf4",
+    "MinX": 345360,
+    "MinY": 3048460,
+    "MaxX": 355580,
+    "MaxY": 3058940,
+    "Status": "2",
+    "Error": "V3_152;V3_24",
+    "User": "user3"
+}, {
+    "Clip": "clip_369_par_psf4",
+    "MinX": 4209360,
+    "MinY": 3463420,
+    "MaxX": 4219580,
+    "MaxY": 3473900,
+    "Status": "0",
+    "Error": "V3_152;V3_24",
+    "User": ""
+}, {
+    "Clip": "clip_36_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4091880,
+    "MaxX": 5750270,
+    "MaxY": 4104840,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user3"
+}, {
+    "Clip": "clip_370_par_psf4",
+    "MinX": 983760,
+    "MinY": 3591100,
+    "MaxX": 993980,
+    "MaxY": 3601580,
+    "Status": "0",
+    "Error": "V3_152;V3_24",
+    "User": ""
+}, {
+    "Clip": "clip_371_par_psf4",
+    "MinX": 5620560,
+    "MinY": 3623020,
+    "MaxX": 5630780,
+    "MaxY": 3633500,
+    "Status": "2",
+    "Error": "V3_152;V3_24",
+    "User": "user3"
+}, {
+    "Clip": "clip_372_par_psf4",
+    "MinX": 4444560,
+    "MinY": 3623020,
+    "MaxX": 4454780,
+    "MaxY": 3633500,
+    "Status": "2",
+    "Error": "V3_152;V3_24",
+    "User": "user1"
+}, {
+    "Clip": "clip_373_par_psf4",
+    "MinX": 210960,
+    "MinY": 3750700,
+    "MaxX": 221180,
+    "MaxY": 3761180,
+    "Status": "1",
+    "Error": "V3_152;V3_24",
+    "User": "user3"
+}, {
+    "Clip": "clip_374_par_psf4",
+    "MinX": 412560,
+    "MinY": 4037980,
+    "MaxX": 422780,
+    "MaxY": 4048460,
+    "Status": "1",
+    "Error": "V3_152;V3_24",
+    "User": "user3"
+}, {
+    "Clip": "clip_375_par_psf4",
+    "MinX": 345360,
+    "MinY": 4181620,
+    "MaxX": 355580,
+    "MaxY": 4192100,
+    "Status": "1",
+    "Error": "V3_152;V3_24",
+    "User": "user3"
+}, {
+    "Clip": "clip_376_par_psf4",
+    "MinX": 3436560,
+    "MinY": 4421020,
+    "MaxX": 3446780,
+    "MaxY": 4431500,
+    "Status": "2",
+    "Error": "V3_152;V3_24",
+    "User": "user1"
+}, {
+    "Clip": "clip_377_par_psf4",
+    "MinX": 4276560,
+    "MinY": 4564660,
+    "MaxX": 4286780,
+    "MaxY": 4575140,
+    "Status": "1",
+    "Error": "V3_152;V3_24",
+    "User": "user1"
+}, {
+    "Clip": "clip_378_par_psf4",
+    "MinX": 1615500,
+    "MinY": 3983250,
+    "MaxX": 1625820,
+    "MaxY": 3993810,
+    "Status": "1",
+    "Error": "M3_47",
+    "User": "user3"
+}, {
+    "Clip": "clip_379_par_psf4",
+    "MinX": 4031990,
+    "MinY": 1268940,
+    "MaxX": 4042190,
+    "MaxY": 1279220,
+    "Status": "2",
+    "Error": "M2_47",
+    "User": "user1"
+}, {
+    "Clip": "clip_37_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4091880,
+    "MaxX": 5347920,
+    "MaxY": 4104840,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_380_par_psf4",
+    "MinX": 445300,
+    "MinY": 1625440,
+    "MaxX": 458390,
+    "MaxY": 1635790,
+    "Status": "0",
+    "Error": "M1_84",
+    "User": ""
+}, {
+    "Clip": "clip_381_par_psf4",
+    "MinX": 3984720,
+    "MinY": 965970,
+    "MaxX": 3995160,
+    "MaxY": 976220,
+    "Status": "2",
+    "Error": "M2_48",
+    "User": "user1"
+}, {
+    "Clip": "clip_382_par_psf4",
+    "MinX": 297670,
+    "MinY": 1021310,
+    "MaxX": 307870,
+    "MaxY": 1031560,
+    "Status": "2",
+    "Error": "M2_48",
+    "User": "user3"
+}, {
+    "Clip": "clip_383_par_psf4",
+    "MinX": 644170,
+    "MinY": 2007770,
+    "MaxX": 654370,
+    "MaxY": 2018020,
+    "Status": "1",
+    "Error": "M2_48",
+    "User": "user1"
+}, {
+    "Clip": "clip_384_par_psf4",
+    "MinX": 1881050,
+    "MinY": 2088090,
+    "MaxX": 1891250,
+    "MaxY": 2098340,
+    "Status": "0",
+    "Error": "M2_48",
+    "User": ""
+}, {
+    "Clip": "clip_385_par_psf4",
+    "MinX": 4148300,
+    "MinY": 542110,
+    "MaxX": 4158590,
+    "MaxY": 552310,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_386_par_psf4",
+    "MinX": 3985900,
+    "MinY": 645850,
+    "MaxX": 3996190,
+    "MaxY": 656050,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_387_par_psf4",
+    "MinX": 1524000,
+    "MinY": 740440,
+    "MaxX": 1553890,
+    "MaxY": 766600,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_388_par_psf4",
+    "MinX": 364800,
+    "MinY": 708520,
+    "MaxX": 375090,
+    "MaxY": 718720,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_389_par_psf4",
+    "MinX": 312300,
+    "MinY": 940890,
+    "MaxX": 322590,
+    "MaxY": 951260,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_38_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4251480,
+    "MaxX": 5750270,
+    "MaxY": 4264440,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_390_par_psf4",
+    "MinX": 1832000,
+    "MinY": 916000,
+    "MaxX": 1842290,
+    "MaxY": 926200,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_391_par_psf4",
+    "MinX": 4862300,
+    "MinY": 869290,
+    "MaxX": 4872590,
+    "MaxY": 879490,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_392_par_psf4",
+    "MinX": 1121500,
+    "MinY": 853310,
+    "MaxX": 1131790,
+    "MaxY": 863510,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_393_par_psf4",
+    "MinX": 432700,
+    "MinY": 981010,
+    "MaxX": 442990,
+    "MaxY": 991210,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_394_par_psf4",
+    "MinX": 1440000,
+    "MinY": 979840,
+    "MaxX": 1450290,
+    "MaxY": 990040,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_395_par_psf4",
+    "MinX": 3778700,
+    "MinY": 957070,
+    "MaxX": 3788990,
+    "MaxY": 967270,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_396_par_psf4",
+    "MinX": 597200,
+    "MinY": 955900,
+    "MaxX": 607490,
+    "MaxY": 966100,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_397_par_psf4",
+    "MinX": 3865500,
+    "MinY": 949090,
+    "MaxX": 3875790,
+    "MaxY": 959290,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_398_par_psf4",
+    "MinX": 4637600,
+    "MinY": 1123480,
+    "MaxX": 4647890,
+    "MaxY": 1133680,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_399_par_psf4",
+    "MinX": 1692700,
+    "MinY": 1076770,
+    "MaxX": 1702990,
+    "MaxY": 1086970,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_39_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4251480,
+    "MaxX": 5347920,
+    "MaxY": 4264440,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_3_par_psf4",
+    "MinX": 3937020,
+    "MinY": 1672000,
+    "MaxX": 3947220,
+    "MaxY": 1683800,
+    "Status": "0",
+    "Error": "M7_21/22/26/27/37;M7_37",
+    "User": ""
+}, {
+    "Clip": "clip_400_par_psf4",
+    "MinX": 1446300,
+    "MinY": 1180510,
+    "MaxX": 1456590,
+    "MaxY": 1190710,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_401_par_psf4",
+    "MinX": 1238400,
+    "MinY": 1147420,
+    "MaxX": 1248690,
+    "MaxY": 1157620,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_402_par_psf4",
+    "MinX": 3649900,
+    "MinY": 1140610,
+    "MaxX": 3660190,
+    "MaxY": 1150810,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_403_par_psf4",
+    "MinX": 3768200,
+    "MinY": 1283080,
+    "MaxX": 3778490,
+    "MaxY": 1293280,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_404_par_psf4",
+    "MinX": 1784400,
+    "MinY": 1267120,
+    "MaxX": 1794690,
+    "MaxY": 1277320,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_405_par_psf4",
+    "MinX": 3775900,
+    "MinY": 1236370,
+    "MaxX": 3786190,
+    "MaxY": 1246570,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_406_par_psf4",
+    "MinX": 1017900,
+    "MinY": 1411930,
+    "MaxX": 1028190,
+    "MaxY": 1422130,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_407_par_psf4",
+    "MinX": 4453500,
+    "MinY": 1403950,
+    "MaxX": 4463790,
+    "MaxY": 1414150,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_408_par_psf4",
+    "MinX": 3115100,
+    "MinY": 1403950,
+    "MaxX": 3125390,
+    "MaxY": 1414150,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_409_par_psf4",
+    "MinX": 4268700,
+    "MinY": 1364050,
+    "MaxX": 4278990,
+    "MaxY": 1374250,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_40_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4219560,
+    "MaxX": 5750270,
+    "MaxY": 4232520,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_410_par_psf4",
+    "MinX": 2798000,
+    "MinY": 1354900,
+    "MaxX": 2808290,
+    "MaxY": 1365100,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_411_par_psf4",
+    "MinX": 3478400,
+    "MinY": 1346920,
+    "MaxX": 3488690,
+    "MaxY": 1357120,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_412_par_psf4",
+    "MinX": 3929900,
+    "MinY": 1332130,
+    "MaxX": 3940190,
+    "MaxY": 1342330,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_413_par_psf4",
+    "MinX": 2361200,
+    "MinY": 1322980,
+    "MaxX": 2371490,
+    "MaxY": 1333180,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_414_par_psf4",
+    "MinX": 3752800,
+    "MinY": 1458640,
+    "MaxX": 3763090,
+    "MaxY": 1468840,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_415_par_psf4",
+    "MinX": 3873900,
+    "MinY": 1435870,
+    "MaxX": 3884190,
+    "MaxY": 1446070,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_416_par_psf4",
+    "MinX": 2762300,
+    "MinY": 1427890,
+    "MaxX": 2772590,
+    "MaxY": 1438090,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_417_par_psf4",
+    "MinX": 3731800,
+    "MinY": 1418740,
+    "MaxX": 3742090,
+    "MaxY": 1428940,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_418_par_psf4",
+    "MinX": 1277600,
+    "MinY": 1538440,
+    "MaxX": 1287890,
+    "MaxY": 1548640,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_419_par_psf4",
+    "MinX": 2739900,
+    "MinY": 1531630,
+    "MaxX": 2750190,
+    "MaxY": 1541830,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_41_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4219560,
+    "MaxX": 5347920,
+    "MaxY": 4232520,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_420_par_psf4",
+    "MinX": 3820000,
+    "MinY": 1530460,
+    "MaxX": 3830290,
+    "MaxY": 1540660,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_421_par_psf4",
+    "MinX": 756800,
+    "MinY": 1530460,
+    "MaxX": 767090,
+    "MaxY": 1540660,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_422_par_psf4",
+    "MinX": 1785100,
+    "MinY": 1523650,
+    "MaxX": 1795390,
+    "MaxY": 1533850,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_423_par_psf4",
+    "MinX": 844210,
+    "MinY": 1693220,
+    "MaxX": 862990,
+    "MaxY": 1709360,
+    "Status": "2",
+    "Error": "M1_81;V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_424_par_psf4",
+    "MinX": 2408800,
+    "MinY": 1634200,
+    "MaxX": 2419090,
+    "MaxY": 1644400,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_425_par_psf4",
+    "MinX": 485200,
+    "MinY": 1769860,
+    "MaxX": 495490,
+    "MaxY": 1780060,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_426_par_psf4",
+    "MinX": 1272000,
+    "MinY": 1753900,
+    "MaxX": 1282290,
+    "MaxY": 1764100,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_427_par_psf4",
+    "MinX": 448800,
+    "MinY": 1753900,
+    "MaxX": 459090,
+    "MaxY": 1764100,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_428_par_psf4",
+    "MinX": 3439200,
+    "MinY": 1721980,
+    "MaxX": 3449490,
+    "MaxY": 1732180,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_429_par_psf4",
+    "MinX": 3058400,
+    "MinY": 1714000,
+    "MaxX": 3068690,
+    "MaxY": 1724200,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_42_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4187640,
+    "MaxX": 5750270,
+    "MaxY": 4200600,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user2"
+}, {
+    "Clip": "clip_430_par_psf4",
+    "MinX": 3943200,
+    "MinY": 1881580,
+    "MaxX": 3953490,
+    "MaxY": 1891780,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_431_par_psf4",
+    "MinX": 2669200,
+    "MinY": 1849660,
+    "MaxX": 2679490,
+    "MaxY": 1859860,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_432_par_psf4",
+    "MinX": 1983900,
+    "MinY": 1842850,
+    "MaxX": 1994190,
+    "MaxY": 1853050,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_433_par_psf4",
+    "MinX": 686800,
+    "MinY": 1833700,
+    "MaxX": 697090,
+    "MaxY": 1843900,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_434_par_psf4",
+    "MinX": 3400000,
+    "MinY": 1825720,
+    "MaxX": 3410290,
+    "MaxY": 1835920,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_435_par_psf4",
+    "MinX": 3630300,
+    "MinY": 1802950,
+    "MaxX": 3640590,
+    "MaxY": 1813150,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_436_par_psf4",
+    "MinX": 1969200,
+    "MinY": 1937440,
+    "MaxX": 1979490,
+    "MaxY": 1947640,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_437_par_psf4",
+    "MinX": 3815100,
+    "MinY": 2058310,
+    "MaxX": 3825390,
+    "MaxY": 2068510,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_438_par_psf4",
+    "MinX": 4242800,
+    "MinY": 2033200,
+    "MaxX": 4253090,
+    "MaxY": 2043400,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_439_par_psf4",
+    "MinX": 3369900,
+    "MinY": 2018410,
+    "MaxX": 3380190,
+    "MaxY": 2028610,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_43_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4187640,
+    "MaxX": 5347920,
+    "MaxY": 4200600,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_440_par_psf4",
+    "MinX": 1952400,
+    "MinY": 2017240,
+    "MaxX": 1962690,
+    "MaxY": 2027440,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_441_par_psf4",
+    "MinX": 3895600,
+    "MinY": 2160880,
+    "MaxX": 3905890,
+    "MaxY": 2171080,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_442_par_psf4",
+    "MinX": 2668500,
+    "MinY": 2154070,
+    "MaxX": 2678790,
+    "MaxY": 2164270,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_443_par_psf4",
+    "MinX": 1888700,
+    "MinY": 2146090,
+    "MaxX": 1898990,
+    "MaxY": 2156290,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_444_par_psf4",
+    "MinX": 1435100,
+    "MinY": 2114170,
+    "MaxX": 1445390,
+    "MaxY": 2124370,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_445_par_psf4",
+    "MinX": 1297200,
+    "MinY": 2105020,
+    "MaxX": 1307490,
+    "MaxY": 2115220,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_446_par_psf4",
+    "MinX": 1793500,
+    "MinY": 2090230,
+    "MaxX": 1820590,
+    "MaxY": 2108410,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_447_par_psf4",
+    "MinX": 2840700,
+    "MinY": 2265790,
+    "MaxX": 2850990,
+    "MaxY": 2275990,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_448_par_psf4",
+    "MinX": 3430800,
+    "MinY": 2264620,
+    "MaxX": 3441090,
+    "MaxY": 2274820,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_449_par_psf4",
+    "MinX": 3408400,
+    "MinY": 2352400,
+    "MaxX": 3418690,
+    "MaxY": 2362600,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_44_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4347240,
+    "MaxX": 5750270,
+    "MaxY": 4360200,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_450_par_psf4",
+    "MinX": 1799100,
+    "MinY": 2337610,
+    "MaxX": 1809390,
+    "MaxY": 2347810,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_451_par_psf4",
+    "MinX": 1874000,
+    "MinY": 2320480,
+    "MaxX": 1884290,
+    "MaxY": 2330680,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_452_par_psf4",
+    "MinX": 2311500,
+    "MinY": 2297710,
+    "MaxX": 2321790,
+    "MaxY": 2307910,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_453_par_psf4",
+    "MinX": 1294400,
+    "MinY": 2280580,
+    "MaxX": 1304690,
+    "MaxY": 2290780,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_454_par_psf4",
+    "MinX": 947200,
+    "MinY": 2432200,
+    "MaxX": 957490,
+    "MaxY": 2442400,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_455_par_psf4",
+    "MinX": 2695100,
+    "MinY": 2409430,
+    "MaxX": 2705390,
+    "MaxY": 2419630,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_456_par_psf4",
+    "MinX": 950700,
+    "MinY": 2393470,
+    "MaxX": 960990,
+    "MaxY": 2403670,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_457_par_psf4",
+    "MinX": 4452800,
+    "MinY": 2535940,
+    "MaxX": 4463090,
+    "MaxY": 2546140,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_458_par_psf4",
+    "MinX": 1515600,
+    "MinY": 2464120,
+    "MaxX": 1525890,
+    "MaxY": 2474320,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_459_par_psf4",
+    "MinX": 4058000,
+    "MinY": 2631700,
+    "MaxX": 4068290,
+    "MaxY": 2641900,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_45_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4347240,
+    "MaxX": 5347920,
+    "MaxY": 4360200,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user3"
+}, {
+    "Clip": "clip_460_par_psf4",
+    "MinX": 3448300,
+    "MinY": 2569030,
+    "MaxX": 3458590,
+    "MaxY": 2579230,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_461_par_psf4",
+    "MinX": 829600,
+    "MinY": 2567860,
+    "MaxX": 839890,
+    "MaxY": 2578060,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_462_par_psf4",
+    "MinX": 1390300,
+    "MinY": 2712670,
+    "MaxX": 1400590,
+    "MaxY": 2722870,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_463_par_psf4",
+    "MinX": 2520800,
+    "MinY": 2663620,
+    "MaxX": 2531090,
+    "MaxY": 2673820,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_464_par_psf4",
+    "MinX": 4713200,
+    "MinY": 2807260,
+    "MaxX": 4723490,
+    "MaxY": 2817460,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_465_par_psf4",
+    "MinX": 1876800,
+    "MinY": 2791300,
+    "MaxX": 1887090,
+    "MaxY": 2801500,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_466_par_psf4",
+    "MinX": 4956800,
+    "MinY": 2767360,
+    "MaxX": 4967090,
+    "MaxY": 2777560,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_467_par_psf4",
+    "MinX": 1361600,
+    "MinY": 2903020,
+    "MaxX": 1371890,
+    "MaxY": 2913220,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_468_par_psf4",
+    "MinX": 3419600,
+    "MinY": 2887060,
+    "MaxX": 3429890,
+    "MaxY": 2897260,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_469_par_psf4",
+    "MinX": 1054300,
+    "MinY": 2864290,
+    "MaxX": 1064590,
+    "MaxY": 2874490,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_46_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4315320,
+    "MaxX": 5750270,
+    "MaxY": 4328280,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_470_par_psf4",
+    "MinX": 914300,
+    "MinY": 2856310,
+    "MaxX": 924590,
+    "MaxY": 2866510,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_471_par_psf4",
+    "MinX": 3640800,
+    "MinY": 2847160,
+    "MaxX": 3651090,
+    "MaxY": 2857360,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_472_par_psf4",
+    "MinX": 356400,
+    "MinY": 2847160,
+    "MaxX": 366690,
+    "MaxY": 2857360,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_473_par_psf4",
+    "MinX": 992700,
+    "MinY": 2952070,
+    "MaxX": 1002990,
+    "MaxY": 2962270,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_474_par_psf4",
+    "MinX": 4999500,
+    "MinY": 3103690,
+    "MaxX": 5009790,
+    "MaxY": 3113890,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_475_par_psf4",
+    "MinX": 932500,
+    "MinY": 3047810,
+    "MaxX": 942790,
+    "MaxY": 3058010,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_476_par_psf4",
+    "MinX": 2232400,
+    "MinY": 3046660,
+    "MaxX": 2242690,
+    "MaxY": 3056860,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_477_par_psf4",
+    "MinX": 4368800,
+    "MinY": 3198280,
+    "MaxX": 4379090,
+    "MaxY": 3208480,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_478_par_psf4",
+    "MinX": 3993600,
+    "MinY": 3198280,
+    "MaxX": 4003890,
+    "MaxY": 3208480,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_479_par_psf4",
+    "MinX": 5024700,
+    "MinY": 3151570,
+    "MaxX": 5034990,
+    "MaxY": 3161770,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_47_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4315320,
+    "MaxX": 5347920,
+    "MaxY": 4328280,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_480_par_psf4",
+    "MinX": 4847600,
+    "MinY": 3302020,
+    "MaxX": 4857890,
+    "MaxY": 3312220,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_481_par_psf4",
+    "MinX": 3112300,
+    "MinY": 3406930,
+    "MaxX": 3122590,
+    "MaxY": 3417130,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_482_par_psf4",
+    "MinX": 5369100,
+    "MinY": 3367030,
+    "MaxX": 5379390,
+    "MaxY": 3377230,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_483_par_psf4",
+    "MinX": 5458000,
+    "MinY": 3349900,
+    "MaxX": 5468290,
+    "MaxY": 3360100,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_484_par_psf4",
+    "MinX": 2345100,
+    "MinY": 3454810,
+    "MaxX": 2355390,
+    "MaxY": 3465010,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_485_par_psf4",
+    "MinX": 1135500,
+    "MinY": 3590470,
+    "MaxX": 1145790,
+    "MaxY": 3600670,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_486_par_psf4",
+    "MinX": 2952700,
+    "MinY": 3589300,
+    "MaxX": 2962990,
+    "MaxY": 3599500,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_487_par_psf4",
+    "MinX": 3865500,
+    "MinY": 3550570,
+    "MaxX": 3875790,
+    "MaxY": 3560770,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_488_par_psf4",
+    "MinX": 3545600,
+    "MinY": 3525460,
+    "MaxX": 3555890,
+    "MaxY": 3535660,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_489_par_psf4",
+    "MinX": 5301900,
+    "MinY": 3502690,
+    "MaxX": 5312190,
+    "MaxY": 3512890,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_48_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4283400,
+    "MaxX": 5750270,
+    "MaxY": 4296360,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_490_par_psf4",
+    "MinX": 3218000,
+    "MinY": 3669100,
+    "MaxX": 3228290,
+    "MaxY": 3679300,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_491_par_psf4",
+    "MinX": 3697500,
+    "MinY": 3654090,
+    "MaxX": 3707790,
+    "MaxY": 3664460,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_492_par_psf4",
+    "MinX": 3672300,
+    "MinY": 3622390,
+    "MaxX": 3682590,
+    "MaxY": 3632590,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_493_par_psf4",
+    "MinX": 1924400,
+    "MinY": 3748900,
+    "MaxX": 1934690,
+    "MaxY": 3759100,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_494_par_psf4",
+    "MinX": 2238700,
+    "MinY": 3710170,
+    "MaxX": 2248990,
+    "MaxY": 3720370,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_495_par_psf4",
+    "MinX": 4296700,
+    "MinY": 3861790,
+    "MaxX": 4306990,
+    "MaxY": 3871990,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_496_par_psf4",
+    "MinX": 3397900,
+    "MinY": 3861790,
+    "MaxX": 3408190,
+    "MaxY": 3871990,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_497_par_psf4",
+    "MinX": 4318400,
+    "MinY": 3828700,
+    "MaxX": 4328690,
+    "MaxY": 3838900,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_498_par_psf4",
+    "MinX": 1577900,
+    "MinY": 3797950,
+    "MaxX": 1588190,
+    "MaxY": 3808150,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_499_par_psf4",
+    "MinX": 1678700,
+    "MinY": 3909670,
+    "MaxX": 1688990,
+    "MaxY": 3919870,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_49_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4283400,
+    "MaxX": 5347920,
+    "MaxY": 4296360,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_4_par_psf4",
+    "MinX": 3359660,
+    "MinY": 1735840,
+    "MaxX": 3376020,
+    "MaxY": 1750160,
+    "Status": "0",
+    "Error": "M7_21/22/26/27/37;M7_37",
+    "User": ""
+}, {
+    "Clip": "clip_500_par_psf4",
+    "MinX": 1986700,
+    "MinY": 4053310,
+    "MaxX": 1996990,
+    "MaxY": 4063510,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_501_par_psf4",
+    "MinX": 3025500,
+    "MinY": 4165030,
+    "MaxX": 3035790,
+    "MaxY": 4175230,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_502_par_psf4",
+    "MinX": 1003200,
+    "MinY": 4115980,
+    "MaxX": 1013490,
+    "MaxY": 4126180,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_503_par_psf4",
+    "MinX": 3873200,
+    "MinY": 4092040,
+    "MaxX": 3883490,
+    "MaxY": 4102240,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_504_par_psf4",
+    "MinX": 1524700,
+    "MinY": 4077250,
+    "MaxX": 1534990,
+    "MaxY": 4087450,
+    "Status": "0",
+    "Error": "M1_81",
+    "User": ""
+}, {
+    "Clip": "clip_505_par_psf4",
+    "MinX": 3811600,
+    "MinY": 4179820,
+    "MaxX": 3821890,
+    "MaxY": 4190020,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user1"
+}, {
+    "Clip": "clip_506_par_psf4",
+    "MinX": 2170800,
+    "MinY": 4307500,
+    "MaxX": 2181090,
+    "MaxY": 4317700,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_507_par_psf4",
+    "MinX": 1218800,
+    "MinY": 4307500,
+    "MaxX": 1229090,
+    "MaxY": 4317700,
+    "Status": "2",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_508_par_psf4",
+    "MinX": 3663900,
+    "MinY": 4276750,
+    "MaxX": 3674190,
+    "MaxY": 4286950,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_509_par_psf4",
+    "MinX": 1449100,
+    "MinY": 4412410,
+    "MaxX": 1459390,
+    "MaxY": 4422610,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user3"
+}, {
+    "Clip": "clip_50_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4443000,
+    "MaxX": 5750270,
+    "MaxY": 4455960,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_510_par_psf4",
+    "MinX": 4025100,
+    "MinY": 4364530,
+    "MaxX": 4035390,
+    "MaxY": 4374730,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_511_par_psf4",
+    "MinX": 3383200,
+    "MinY": 4467100,
+    "MaxX": 3393490,
+    "MaxY": 4477300,
+    "Status": "1",
+    "Error": "M1_81",
+    "User": "user2"
+}, {
+    "Clip": "clip_512_par_psf4",
+    "MinX": 1084560,
+    "MinY": 723820,
+    "MaxX": 1094780,
+    "MaxY": 734060,
+    "Status": "1",
+    "Error": "V3_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_513_par_psf4",
+    "MinX": 1050960,
+    "MinY": 1058980,
+    "MaxX": 1061180,
+    "MaxY": 1069220,
+    "Status": "1",
+    "Error": "V3_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_514_par_psf4",
+    "MinX": 378960,
+    "MinY": 1457980,
+    "MaxX": 389180,
+    "MaxY": 1468220,
+    "Status": "1",
+    "Error": "V3_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_515_par_psf4",
+    "MinX": 1487760,
+    "MinY": 1649500,
+    "MaxX": 1497980,
+    "MaxY": 1659740,
+    "Status": "1",
+    "Error": "V3_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_516_par_psf4",
+    "MinX": 311760,
+    "MinY": 3117820,
+    "MaxX": 321980,
+    "MaxY": 3128060,
+    "Status": "1",
+    "Error": "V3_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_517_par_psf4",
+    "MinX": 3738960,
+    "MinY": 3181660,
+    "MaxX": 3749180,
+    "MaxY": 3191900,
+    "Status": "0",
+    "Error": "V3_152",
+    "User": ""
+}, {
+    "Clip": "clip_518_par_psf4",
+    "MinX": 5284560,
+    "MinY": 3564700,
+    "MaxX": 5294780,
+    "MaxY": 3574940,
+    "Status": "0",
+    "Error": "V3_152",
+    "User": ""
+}, {
+    "Clip": "clip_519_par_psf4",
+    "MinX": 479760,
+    "MinY": 3963700,
+    "MaxX": 489980,
+    "MaxY": 3973940,
+    "Status": "2",
+    "Error": "V3_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_51_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4443000,
+    "MaxX": 5347920,
+    "MaxY": 4455960,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user2"
+}, {
+    "Clip": "clip_520_par_psf4",
+    "MinX": 311760,
+    "MinY": 3963700,
+    "MaxX": 321980,
+    "MaxY": 3973940,
+    "Status": "2",
+    "Error": "V3_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_521_par_psf4",
+    "MinX": 4914960,
+    "MinY": 4554220,
+    "MaxX": 4925180,
+    "MaxY": 4564460,
+    "Status": "1",
+    "Error": "V3_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_522_par_psf4",
+    "MinX": 446380,
+    "MinY": 1374020,
+    "MaxX": 456660,
+    "MaxY": 1384240,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_523_par_psf4",
+    "MinX": 296710,
+    "MinY": 1358060,
+    "MaxX": 317120,
+    "MaxY": 1384240,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_524_par_psf4",
+    "MinX": 363610,
+    "MinY": 1334120,
+    "MaxX": 381020,
+    "MaxY": 1360300,
+    "Status": "1",
+    "Error": "V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_525_par_psf4",
+    "MinX": 335690,
+    "MinY": 1350080,
+    "MaxX": 348590,
+    "MaxY": 1368280,
+    "Status": "1",
+    "Error": "V2_152;V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_526_par_psf4",
+    "MinX": 616460,
+    "MinY": 1597460,
+    "MaxX": 626740,
+    "MaxY": 1607680,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_527_par_psf4",
+    "MinX": 1893890,
+    "MinY": 1541600,
+    "MaxX": 1950610,
+    "MaxY": 1607680,
+    "Status": "0",
+    "Error": "V2_152;V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_528_par_psf4",
+    "MinX": 707380,
+    "MinY": 1589480,
+    "MaxX": 724520,
+    "MaxY": 1607680,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_529_par_psf4",
+    "MinX": 992980,
+    "MinY": 1565540,
+    "MaxX": 1003180,
+    "MaxY": 1575760,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_52_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4411080,
+    "MaxX": 5750270,
+    "MaxY": 4424040,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user3"
+}, {
+    "Clip": "clip_530_par_psf4",
+    "MinX": 1966200,
+    "MinY": 1549580,
+    "MaxX": 1976400,
+    "MaxY": 1559800,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_531_par_psf4",
+    "MinX": 993590,
+    "MinY": 1509680,
+    "MaxX": 1011600,
+    "MaxY": 1535860,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_532_par_psf4",
+    "MinX": 1025940,
+    "MinY": 1693220,
+    "MaxX": 1036220,
+    "MaxY": 1703440,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_533_par_psf4",
+    "MinX": 752400,
+    "MinY": 1693220,
+    "MaxX": 762600,
+    "MaxY": 1703440,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_534_par_psf4",
+    "MinX": 688490,
+    "MinY": 1685240,
+    "MaxX": 698690,
+    "MaxY": 1695460,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_535_par_psf4",
+    "MinX": 660580,
+    "MinY": 1661300,
+    "MaxX": 671400,
+    "MaxY": 1687480,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_536_par_psf4",
+    "MinX": 1035000,
+    "MinY": 1661300,
+    "MaxX": 1045200,
+    "MaxY": 1671520,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_537_par_psf4",
+    "MinX": 937200,
+    "MinY": 1661300,
+    "MaxX": 955520,
+    "MaxY": 1679500,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_538_par_psf4",
+    "MinX": 821080,
+    "MinY": 1677260,
+    "MaxX": 831280,
+    "MaxY": 1687480,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_539_par_psf4",
+    "MinX": 750010,
+    "MinY": 1781000,
+    "MaxX": 760510,
+    "MaxY": 1799200,
+    "Status": "1",
+    "Error": "V2_152;V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_53_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4411080,
+    "MaxX": 5347920,
+    "MaxY": 4424040,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user1"
+}, {
+    "Clip": "clip_540_par_psf4",
+    "MinX": 718800,
+    "MinY": 1781000,
+    "MaxX": 729000,
+    "MaxY": 1791220,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_541_par_psf4",
+    "MinX": 791380,
+    "MinY": 1765040,
+    "MaxX": 805800,
+    "MaxY": 1783240,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_542_par_psf4",
+    "MinX": 1093140,
+    "MinY": 1757060,
+    "MaxX": 1106720,
+    "MaxY": 1783240,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_543_par_psf4",
+    "MinX": 818060,
+    "MinY": 1765040,
+    "MaxX": 828340,
+    "MaxY": 1775260,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_544_par_psf4",
+    "MinX": 757140,
+    "MinY": 1757060,
+    "MaxX": 767420,
+    "MaxY": 1767280,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_545_par_psf4",
+    "MinX": 971340,
+    "MinY": 1733120,
+    "MaxX": 981620,
+    "MaxY": 1743340,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_546_par_psf4",
+    "MinX": 887340,
+    "MinY": 1733120,
+    "MaxX": 897620,
+    "MaxY": 1743340,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_547_par_psf4",
+    "MinX": 1870180,
+    "MinY": 1709180,
+    "MaxX": 1880460,
+    "MaxY": 1719400,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_548_par_psf4",
+    "MinX": 1081200,
+    "MinY": 1701200,
+    "MaxX": 1091400,
+    "MaxY": 1711420,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_549_par_psf4",
+    "MinX": 970800,
+    "MinY": 1693220,
+    "MaxX": 991210,
+    "MaxY": 1711420,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_54_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4379160,
+    "MaxX": 5750270,
+    "MaxY": 4392120,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user2"
+}, {
+    "Clip": "clip_550_par_psf4",
+    "MinX": 311120,
+    "MinY": 1852820,
+    "MaxX": 352200,
+    "MaxY": 1926880,
+    "Status": "0",
+    "Error": "V2_152;V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_551_par_psf4",
+    "MinX": 1427690,
+    "MinY": 1852820,
+    "MaxX": 1439980,
+    "MaxY": 1879000,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_552_par_psf4",
+    "MinX": 895780,
+    "MinY": 1868780,
+    "MaxX": 906060,
+    "MaxY": 1879000,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_553_par_psf4",
+    "MinX": 800710,
+    "MinY": 1844840,
+    "MaxX": 810910,
+    "MaxY": 1855060,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_554_par_psf4",
+    "MinX": 1420780,
+    "MinY": 1828880,
+    "MaxX": 1431060,
+    "MaxY": 1839100,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_555_par_psf4",
+    "MinX": 920400,
+    "MinY": 1796960,
+    "MaxX": 936590,
+    "MaxY": 1831120,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_556_par_psf4",
+    "MinX": 928520,
+    "MinY": 1844840,
+    "MaxX": 938720,
+    "MaxY": 1855060,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_557_par_psf4",
+    "MinX": 774880,
+    "MinY": 1836860,
+    "MaxX": 785080,
+    "MaxY": 1847080,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_558_par_psf4",
+    "MinX": 770680,
+    "MinY": 1812920,
+    "MaxX": 780880,
+    "MaxY": 1823140,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_559_par_psf4",
+    "MinX": 1096520,
+    "MinY": 1796960,
+    "MaxX": 1106720,
+    "MaxY": 1807180,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_55_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4379160,
+    "MaxX": 5347920,
+    "MaxY": 4392120,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_560_par_psf4",
+    "MinX": 1361940,
+    "MinY": 1948580,
+    "MaxX": 1372220,
+    "MaxY": 1958800,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_561_par_psf4",
+    "MinX": 1433380,
+    "MinY": 1908680,
+    "MaxX": 1443660,
+    "MaxY": 1918900,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_562_par_psf4",
+    "MinX": 1394700,
+    "MinY": 1908680,
+    "MaxX": 1410600,
+    "MaxY": 1926880,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_563_par_psf4",
+    "MinX": 767660,
+    "MinY": 1908680,
+    "MaxX": 777940,
+    "MaxY": 1918900,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_564_par_psf4",
+    "MinX": 736140,
+    "MinY": 1892720,
+    "MaxX": 747280,
+    "MaxY": 1918900,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_565_par_psf4",
+    "MinX": 371380,
+    "MinY": 2076260,
+    "MaxX": 381580,
+    "MaxY": 2086480,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_566_par_psf4",
+    "MinX": 341380,
+    "MinY": 2068280,
+    "MaxX": 353110,
+    "MaxY": 2094460,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_567_par_psf4",
+    "MinX": 346810,
+    "MinY": 2028380,
+    "MaxX": 368460,
+    "MaxY": 2054560,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_568_par_psf4",
+    "MinX": 752400,
+    "MinY": 1996460,
+    "MaxX": 762600,
+    "MaxY": 2006680,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_569_par_psf4",
+    "MinX": 740980,
+    "MinY": 2164040,
+    "MaxX": 751180,
+    "MaxY": 2174260,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_56_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4538760,
+    "MaxX": 5751600,
+    "MaxY": 4554100,
+    "Status": "1",
+    "Error": "M4_44;M5_44;M6_149",
+    "User": "user3"
+}, {
+    "Clip": "clip_570_par_psf4",
+    "MinX": 589780,
+    "MinY": 2172020,
+    "MaxX": 599980,
+    "MaxY": 2182240,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_571_par_psf4",
+    "MinX": 274180,
+    "MinY": 2164040,
+    "MaxX": 284460,
+    "MaxY": 2174260,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_572_par_psf4",
+    "MinX": 369900,
+    "MinY": 2132120,
+    "MaxX": 386410,
+    "MaxY": 2158300,
+    "Status": "1",
+    "Error": "V2_152;V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_573_par_psf4",
+    "MinX": 306920,
+    "MinY": 2108180,
+    "MaxX": 354920,
+    "MaxY": 2174260,
+    "Status": "0",
+    "Error": "V2_152;V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_574_par_psf4",
+    "MinX": 667790,
+    "MinY": 2251820,
+    "MaxX": 693310,
+    "MaxY": 2278000,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_575_par_psf4",
+    "MinX": 337140,
+    "MinY": 2267780,
+    "MaxX": 347420,
+    "MaxY": 2278000,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_576_par_psf4",
+    "MinX": 1001400,
+    "MinY": 2259800,
+    "MaxX": 1026920,
+    "MaxY": 2285980,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_577_par_psf4",
+    "MinX": 818990,
+    "MinY": 2187980,
+    "MaxX": 883790,
+    "MaxY": 2325880,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_578_par_psf4",
+    "MinX": 303000,
+    "MinY": 2259800,
+    "MaxX": 313200,
+    "MaxY": 2270020,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_579_par_psf4",
+    "MinX": 265740,
+    "MinY": 2243840,
+    "MaxX": 276020,
+    "MaxY": 2254060,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_57_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4538760,
+    "MaxX": 5347920,
+    "MaxY": 4549200,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user3"
+}, {
+    "Clip": "clip_580_par_psf4",
+    "MinX": 712510,
+    "MinY": 2211920,
+    "MaxX": 734990,
+    "MaxY": 2246080,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_581_par_psf4",
+    "MinX": 790740,
+    "MinY": 2227880,
+    "MaxX": 801020,
+    "MaxY": 2238100,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_582_par_psf4",
+    "MinX": 565510,
+    "MinY": 2203940,
+    "MaxX": 576340,
+    "MaxY": 2230120,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_583_par_psf4",
+    "MinX": 370740,
+    "MinY": 2227880,
+    "MaxX": 381020,
+    "MaxY": 2238100,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_584_par_psf4",
+    "MinX": 495920,
+    "MinY": 2211920,
+    "MaxX": 525940,
+    "MaxY": 2238100,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_585_par_psf4",
+    "MinX": 404340,
+    "MinY": 2211920,
+    "MaxX": 414620,
+    "MaxY": 2222140,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_586_par_psf4",
+    "MinX": 335690,
+    "MinY": 2211920,
+    "MaxX": 345890,
+    "MaxY": 2222140,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_587_par_psf4",
+    "MinX": 634800,
+    "MinY": 2195960,
+    "MaxX": 645000,
+    "MaxY": 2206180,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_588_par_psf4",
+    "MinX": 404980,
+    "MinY": 2172020,
+    "MaxX": 415790,
+    "MaxY": 2198200,
+    "Status": "1",
+    "Error": "V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_589_par_psf4",
+    "MinX": 318890,
+    "MinY": 2187980,
+    "MaxX": 329090,
+    "MaxY": 2198200,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_58_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4506840,
+    "MaxX": 5750270,
+    "MaxY": 4519800,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user2"
+}, {
+    "Clip": "clip_590_par_psf4",
+    "MinX": 945320,
+    "MinY": 2235860,
+    "MaxX": 955520,
+    "MaxY": 2246080,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_591_par_psf4",
+    "MinX": 1167920,
+    "MinY": 2339600,
+    "MaxX": 1179060,
+    "MaxY": 2365780,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_592_par_psf4",
+    "MinX": 1122000,
+    "MinY": 2363540,
+    "MaxX": 1132200,
+    "MaxY": 2373760,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_593_par_psf4",
+    "MinX": 822890,
+    "MinY": 2347580,
+    "MaxX": 833090,
+    "MaxY": 2357800,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_594_par_psf4",
+    "MinX": 455380,
+    "MinY": 2339600,
+    "MaxX": 465580,
+    "MaxY": 2349820,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_595_par_psf4",
+    "MinX": 354580,
+    "MinY": 2331620,
+    "MaxX": 373200,
+    "MaxY": 2349820,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_596_par_psf4",
+    "MinX": 296410,
+    "MinY": 2339600,
+    "MaxX": 322800,
+    "MaxY": 2365780,
+    "Status": "1",
+    "Error": "V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_597_par_psf4",
+    "MinX": 1024490,
+    "MinY": 2331620,
+    "MaxX": 1034690,
+    "MaxY": 2341840,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_598_par_psf4",
+    "MinX": 1075800,
+    "MinY": 2315660,
+    "MaxX": 1086000,
+    "MaxY": 2325880,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_599_par_psf4",
+    "MinX": 732600,
+    "MinY": 2307680,
+    "MaxX": 756310,
+    "MaxY": 2325880,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_59_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4506840,
+    "MaxX": 5347920,
+    "MaxY": 4519800,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user2"
+}, {
+    "Clip": "clip_5_par_psf4",
+    "MinX": 671660,
+    "MinY": 3883720,
+    "MaxX": 699780,
+    "MaxY": 3898040,
+    "Status": "2",
+    "Error": "M7_21/22/26/27/37;M7_37;V3_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_600_par_psf4",
+    "MinX": 274180,
+    "MinY": 2315660,
+    "MaxX": 284460,
+    "MaxY": 2325880,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_601_par_psf4",
+    "MinX": 245400,
+    "MinY": 2307680,
+    "MaxX": 255600,
+    "MaxY": 2317900,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_602_par_psf4",
+    "MinX": 1151980,
+    "MinY": 2299700,
+    "MaxX": 1176010,
+    "MaxY": 2325880,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_603_par_psf4",
+    "MinX": 218090,
+    "MinY": 2299700,
+    "MaxX": 228290,
+    "MaxY": 2309920,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_604_par_psf4",
+    "MinX": 279000,
+    "MinY": 2283740,
+    "MaxX": 289200,
+    "MaxY": 2293960,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_605_par_psf4",
+    "MinX": 563120,
+    "MinY": 2355560,
+    "MaxX": 573320,
+    "MaxY": 2365780,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_606_par_psf4",
+    "MinX": 774880,
+    "MinY": 2331620,
+    "MaxX": 785080,
+    "MaxY": 2341840,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_607_par_psf4",
+    "MinX": 640480,
+    "MinY": 2323640,
+    "MaxX": 650680,
+    "MaxY": 2333860,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_608_par_psf4",
+    "MinX": 378320,
+    "MinY": 2291720,
+    "MaxX": 394480,
+    "MaxY": 2309920,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_609_par_psf4",
+    "MinX": 325200,
+    "MinY": 2395460,
+    "MaxX": 357010,
+    "MaxY": 2429620,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_60_par_psf4",
+    "MinX": 5740070,
+    "MinY": 4474920,
+    "MaxX": 5750270,
+    "MaxY": 4487880,
+    "Status": "0",
+    "Error": "M6_149",
+    "User": ""
+}, {
+    "Clip": "clip_610_par_psf4",
+    "MinX": 4071600,
+    "MinY": 3728120,
+    "MaxX": 4093820,
+    "MaxY": 3762280,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_611_par_psf4",
+    "MinX": 3958810,
+    "MinY": 3752060,
+    "MaxX": 3976220,
+    "MaxY": 3770260,
+    "Status": "0",
+    "Error": "V2_152;V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_612_par_psf4",
+    "MinX": 3930890,
+    "MinY": 3744080,
+    "MaxX": 3941090,
+    "MaxY": 3754300,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_613_par_psf4",
+    "MinX": 4050880,
+    "MinY": 3776000,
+    "MaxX": 4061080,
+    "MaxY": 3786220,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_614_par_psf4",
+    "MinX": 3889520,
+    "MinY": 3760040,
+    "MaxX": 3899720,
+    "MaxY": 3770260,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_615_par_psf4",
+    "MinX": 4071600,
+    "MinY": 3871760,
+    "MaxX": 4097120,
+    "MaxY": 3897940,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_616_par_psf4",
+    "MinX": 4024780,
+    "MinY": 3831860,
+    "MaxX": 4035060,
+    "MaxY": 3842080,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_617_par_psf4",
+    "MinX": 4016340,
+    "MinY": 3807920,
+    "MaxX": 4026620,
+    "MaxY": 3818140,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_618_par_psf4",
+    "MinX": 3974380,
+    "MinY": 3791960,
+    "MaxX": 3991490,
+    "MaxY": 3810160,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_619_par_psf4",
+    "MinX": 4000180,
+    "MinY": 3959540,
+    "MaxX": 4010380,
+    "MaxY": 3969760,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_61_par_psf4",
+    "MinX": 5337720,
+    "MinY": 4474920,
+    "MaxX": 5347920,
+    "MaxY": 4487880,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user3"
+}, {
+    "Clip": "clip_620_par_psf4",
+    "MinX": 3925510,
+    "MinY": 3943580,
+    "MaxX": 3935710,
+    "MaxY": 3953800,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_621_par_psf4",
+    "MinX": 1287610,
+    "MinY": 3951560,
+    "MaxX": 1300200,
+    "MaxY": 3969760,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_622_par_psf4",
+    "MinX": 1350000,
+    "MinY": 3911660,
+    "MaxX": 1360200,
+    "MaxY": 3921880,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_623_par_psf4",
+    "MinX": 1319120,
+    "MinY": 3959540,
+    "MaxX": 1329320,
+    "MaxY": 3969760,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_624_par_psf4",
+    "MinX": 4074320,
+    "MinY": 3927620,
+    "MaxX": 4084520,
+    "MaxY": 3937840,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_625_par_psf4",
+    "MinX": 3973520,
+    "MinY": 3903680,
+    "MaxX": 3983720,
+    "MaxY": 3913900,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_626_par_psf4",
+    "MinX": 4014890,
+    "MinY": 4039340,
+    "MaxX": 4025090,
+    "MaxY": 4049560,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_627_par_psf4",
+    "MinX": 1271110,
+    "MinY": 4015400,
+    "MaxX": 1281310,
+    "MaxY": 4025620,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_628_par_psf4",
+    "MinX": 4007120,
+    "MinY": 3999440,
+    "MaxX": 4018800,
+    "MaxY": 4025620,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_629_par_psf4",
+    "MinX": 1355110,
+    "MinY": 4007420,
+    "MaxX": 1365310,
+    "MaxY": 4017640,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_62_par_psf4",
+    "MinX": 385460,
+    "MinY": 383620,
+    "MaxX": 397820,
+    "MaxY": 395720,
+    "Status": "0",
+    "Error": "M6_23/24/21/22/123/124/25/26/37/46;M6_46;M6_47;M6_71;M6_ER0;V5_240;V5_61;V5_ER2",
+    "User": ""
+}, {
+    "Clip": "clip_630_par_psf4",
+    "MinX": 1278580,
+    "MinY": 4135100,
+    "MaxX": 1288780,
+    "MaxY": 4145320,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_631_par_psf4",
+    "MinX": 4089310,
+    "MinY": 4111160,
+    "MaxX": 4099510,
+    "MaxY": 4121380,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_632_par_psf4",
+    "MinX": 4080280,
+    "MinY": 4087220,
+    "MaxX": 4090480,
+    "MaxY": 4097440,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_633_par_psf4",
+    "MinX": 1224280,
+    "MinY": 4079240,
+    "MaxX": 1234480,
+    "MaxY": 4089460,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_634_par_psf4",
+    "MinX": 3944940,
+    "MinY": 4254800,
+    "MaxX": 3955220,
+    "MaxY": 4265020,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_635_par_psf4",
+    "MinX": 2079600,
+    "MinY": 4254800,
+    "MaxX": 2089800,
+    "MaxY": 4265020,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_636_par_psf4",
+    "MinX": 3858310,
+    "MinY": 4246820,
+    "MaxX": 3876280,
+    "MaxY": 4273000,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_637_par_psf4",
+    "MinX": 3993260,
+    "MinY": 4238840,
+    "MaxX": 4003540,
+    "MaxY": 4249060,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_638_par_psf4",
+    "MinX": 4117140,
+    "MinY": 4214900,
+    "MaxX": 4127420,
+    "MaxY": 4225120,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_639_par_psf4",
+    "MinX": 1328340,
+    "MinY": 4175000,
+    "MaxX": 1338620,
+    "MaxY": 4185220,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_63_par_psf4",
+    "MinX": 3950360,
+    "MinY": 1008580,
+    "MaxX": 3961700,
+    "MaxY": 1020020,
+    "Status": "0",
+    "Error": "M6_23/24/21/22/123/124/25/26/37/46;M6_46",
+    "User": ""
+}, {
+    "Clip": "clip_640_par_psf4",
+    "MinX": 3932340,
+    "MinY": 4350560,
+    "MaxX": 3946860,
+    "MaxY": 4368760,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_641_par_psf4",
+    "MinX": 4144460,
+    "MinY": 4334600,
+    "MaxX": 4154740,
+    "MaxY": 4344820,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_642_par_psf4",
+    "MinX": 3770110,
+    "MinY": 4326620,
+    "MaxX": 3780310,
+    "MaxY": 4336840,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_643_par_psf4",
+    "MinX": 3841510,
+    "MinY": 4318640,
+    "MaxX": 3851710,
+    "MaxY": 4328860,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_644_par_psf4",
+    "MinX": 3806380,
+    "MinY": 4310660,
+    "MaxX": 3816660,
+    "MaxY": 4320880,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_645_par_psf4",
+    "MinX": 3164400,
+    "MinY": 4302680,
+    "MaxX": 3174600,
+    "MaxY": 4312900,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_646_par_psf4",
+    "MinX": 3000600,
+    "MinY": 4302680,
+    "MaxX": 3010800,
+    "MaxY": 4312900,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_647_par_psf4",
+    "MinX": 2025020,
+    "MinY": 4286720,
+    "MaxX": 2035220,
+    "MaxY": 4296940,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_648_par_psf4",
+    "MinX": 4187720,
+    "MinY": 4318640,
+    "MaxX": 4197920,
+    "MaxY": 4328860,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_649_par_psf4",
+    "MinX": 3784520,
+    "MinY": 4302680,
+    "MaxX": 3794720,
+    "MaxY": 4312900,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_64_par_psf4",
+    "MinX": 2612560,
+    "MinY": 1599940,
+    "MaxX": 2623820,
+    "MaxY": 1611380,
+    "Status": "2",
+    "Error": "M6_23/24/21/22/123/124/25/26/37/46;M6_46",
+    "User": "user3"
+}, {
+    "Clip": "clip_650_par_psf4",
+    "MinX": 4097080,
+    "MinY": 4262780,
+    "MaxX": 4107280,
+    "MaxY": 4273000,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_651_par_psf4",
+    "MinX": 4233290,
+    "MinY": 4446320,
+    "MaxX": 4243490,
+    "MaxY": 4456540,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_652_par_psf4",
+    "MinX": 3932980,
+    "MinY": 4438340,
+    "MaxX": 3943790,
+    "MaxY": 4456540,
+    "Status": "1",
+    "Error": "V2_152;V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_653_par_psf4",
+    "MinX": 3958500,
+    "MinY": 4406420,
+    "MaxX": 4076100,
+    "MaxY": 4528360,
+    "Status": "0",
+    "Error": "V2_152;V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_654_par_psf4",
+    "MinX": 3725390,
+    "MinY": 4430360,
+    "MaxX": 3745800,
+    "MaxY": 4480480,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_655_par_psf4",
+    "MinX": 4159800,
+    "MinY": 4374500,
+    "MaxX": 4190420,
+    "MaxY": 4416640,
+    "Status": "0",
+    "Error": "V2_152;V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_656_par_psf4",
+    "MinX": 4209580,
+    "MinY": 4398440,
+    "MaxX": 4219860,
+    "MaxY": 4408660,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_657_par_psf4",
+    "MinX": 3736210,
+    "MinY": 4382480,
+    "MaxX": 3753620,
+    "MaxY": 4416640,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_658_par_psf4",
+    "MinX": 3851410,
+    "MinY": 4358540,
+    "MaxX": 3899720,
+    "MaxY": 4392700,
+    "Status": "2",
+    "Error": "V2_152;V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_659_par_psf4",
+    "MinX": 3774860,
+    "MinY": 4382480,
+    "MaxX": 3785140,
+    "MaxY": 4392700,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_65_par_psf4",
+    "MinX": 482760,
+    "MinY": 1680580,
+    "MaxX": 494060,
+    "MaxY": 1690780,
+    "Status": "0",
+    "Error": "M6_23/24/21/22/123/124/25/26/37/46;M6_46",
+    "User": ""
+}, {
+    "Clip": "clip_660_par_psf4",
+    "MinX": 2991540,
+    "MinY": 4382480,
+    "MaxX": 3001820,
+    "MaxY": 4392700,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_661_par_psf4",
+    "MinX": 4048490,
+    "MinY": 4374500,
+    "MaxX": 4058690,
+    "MaxY": 4384720,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_662_par_psf4",
+    "MinX": 3998090,
+    "MinY": 4374500,
+    "MaxX": 4008290,
+    "MaxY": 4384720,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_663_par_psf4",
+    "MinX": 3766460,
+    "MinY": 4358540,
+    "MaxX": 3776740,
+    "MaxY": 4368760,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_664_par_psf4",
+    "MinX": 2992180,
+    "MinY": 4358540,
+    "MaxX": 3002380,
+    "MaxY": 4368760,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_665_par_psf4",
+    "MinX": 3889520,
+    "MinY": 4414400,
+    "MaxX": 3899720,
+    "MaxY": 4424620,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_666_par_psf4",
+    "MinX": 3702910,
+    "MinY": 4518140,
+    "MaxX": 3713110,
+    "MaxY": 4528360,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_667_par_psf4",
+    "MinX": 3910800,
+    "MinY": 4494200,
+    "MaxX": 3921000,
+    "MaxY": 4504420,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user2"
+}, {
+    "Clip": "clip_668_par_psf4",
+    "MinX": 4095600,
+    "MinY": 4478240,
+    "MaxX": 4105800,
+    "MaxY": 4488460,
+    "Status": "1",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_669_par_psf4",
+    "MinX": 3689400,
+    "MinY": 4478240,
+    "MaxX": 3699600,
+    "MaxY": 4488460,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user1"
+}, {
+    "Clip": "clip_66_par_psf4",
+    "MinX": 399100,
+    "MinY": 2050330,
+    "MaxX": 437220,
+    "MaxY": 2096210,
+    "Status": "0",
+    "Error": "M1_81;M5_138;M6_23/24/21/22/123/124/25/26/37/46;M6_46",
+    "User": ""
+}, {
+    "Clip": "clip_670_par_psf4",
+    "MinX": 4178060,
+    "MinY": 4470260,
+    "MaxX": 4188340,
+    "MaxY": 4480480,
+    "Status": "2",
+    "Error": "V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_671_par_psf4",
+    "MinX": 4115690,
+    "MinY": 4454300,
+    "MaxX": 4125890,
+    "MaxY": 4464520,
+    "Status": "0",
+    "Error": "V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_672_par_psf4",
+    "MinX": 850500,
+    "MinY": 1669280,
+    "MaxX": 860700,
+    "MaxY": 1679500,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_673_par_psf4",
+    "MinX": 1209900,
+    "MinY": 1669280,
+    "MaxX": 1220100,
+    "MaxY": 1679500,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_674_par_psf4",
+    "MinX": 722700,
+    "MinY": 1645340,
+    "MaxX": 732900,
+    "MaxY": 1655560,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_675_par_psf4",
+    "MinX": 986990,
+    "MinY": 1781000,
+    "MaxX": 997190,
+    "MaxY": 1791220,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_676_par_psf4",
+    "MinX": 1002010,
+    "MinY": 1757060,
+    "MaxX": 1012210,
+    "MaxY": 1767280,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_677_par_psf4",
+    "MinX": 919790,
+    "MinY": 1701200,
+    "MaxX": 929990,
+    "MaxY": 1711420,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_678_par_psf4",
+    "MinX": 1317010,
+    "MinY": 1876760,
+    "MaxX": 1327210,
+    "MaxY": 1886980,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_679_par_psf4",
+    "MinX": 857100,
+    "MinY": 1876760,
+    "MaxX": 867300,
+    "MaxY": 1886980,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_67_par_psf4",
+    "MinX": 4830310,
+    "MinY": 3399220,
+    "MaxX": 4841800,
+    "MaxY": 3411500,
+    "Status": "2",
+    "Error": "M6_23/24/21/22/123/124/25/26/37/46;M6_46",
+    "User": "user1"
+}, {
+    "Clip": "clip_680_par_psf4",
+    "MinX": 1327500,
+    "MinY": 1844840,
+    "MaxX": 1337700,
+    "MaxY": 1855060,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_681_par_psf4",
+    "MinX": 959990,
+    "MinY": 1844840,
+    "MaxX": 970190,
+    "MaxY": 1855060,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_682_par_psf4",
+    "MinX": 785390,
+    "MinY": 1940600,
+    "MaxX": 795590,
+    "MaxY": 1950820,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_683_par_psf4",
+    "MinX": 1333810,
+    "MinY": 1940600,
+    "MaxX": 1344010,
+    "MaxY": 1950820,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_684_par_psf4",
+    "MinX": 1338010,
+    "MinY": 1916660,
+    "MaxX": 1348210,
+    "MaxY": 1926880,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_685_par_psf4",
+    "MinX": 430810,
+    "MinY": 2259800,
+    "MaxX": 441010,
+    "MaxY": 2270020,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_686_par_psf4",
+    "MinX": 325810,
+    "MinY": 2243840,
+    "MaxX": 336010,
+    "MaxY": 2254060,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_687_par_psf4",
+    "MinX": 1098610,
+    "MinY": 2235860,
+    "MaxX": 1108810,
+    "MaxY": 2246080,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_688_par_psf4",
+    "MinX": 302700,
+    "MinY": 2235860,
+    "MaxX": 312900,
+    "MaxY": 2246080,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_689_par_psf4",
+    "MinX": 657590,
+    "MinY": 2227880,
+    "MaxX": 667790,
+    "MaxY": 2238100,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_68_par_psf4",
+    "MinX": 422460,
+    "MinY": 423840,
+    "MaxX": 433300,
+    "MaxY": 434640,
+    "Status": "1",
+    "Error": "M5_60",
+    "User": "user2"
+}, {
+    "Clip": "clip_690_par_psf4",
+    "MinX": 464410,
+    "MinY": 2227880,
+    "MaxX": 474610,
+    "MaxY": 2238100,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_691_par_psf4",
+    "MinX": 439190,
+    "MinY": 2203940,
+    "MaxX": 453610,
+    "MaxY": 2230120,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_692_par_psf4",
+    "MinX": 678610,
+    "MinY": 2347580,
+    "MaxX": 688810,
+    "MaxY": 2357800,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_693_par_psf4",
+    "MinX": 968410,
+    "MinY": 2323640,
+    "MaxX": 984900,
+    "MaxY": 2349820,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_694_par_psf4",
+    "MinX": 1111190,
+    "MinY": 2307680,
+    "MaxX": 1121390,
+    "MaxY": 2317900,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_695_par_psf4",
+    "MinX": 947410,
+    "MinY": 2299700,
+    "MaxX": 957610,
+    "MaxY": 2309920,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_696_par_psf4",
+    "MinX": 632410,
+    "MinY": 2299700,
+    "MaxX": 642610,
+    "MaxY": 2309920,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_697_par_psf4",
+    "MinX": 460210,
+    "MinY": 2291720,
+    "MaxX": 470410,
+    "MaxY": 2301940,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_698_par_psf4",
+    "MinX": 346810,
+    "MinY": 2291720,
+    "MaxX": 357010,
+    "MaxY": 2301940,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_699_par_psf4",
+    "MinX": 426610,
+    "MinY": 2283740,
+    "MaxX": 436810,
+    "MaxY": 2293960,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_69_par_psf4",
+    "MinX": 387300,
+    "MinY": 423340,
+    "MaxX": 401260,
+    "MaxY": 435140,
+    "Status": "0",
+    "Error": "M5BC_21;M5_60",
+    "User": ""
+}, {
+    "Clip": "clip_6_par_psf4",
+    "MinX": 4070100,
+    "MinY": 1238400,
+    "MaxX": 4081680,
+    "MaxY": 1250180,
+    "Status": "0",
+    "Error": "M6_149;M6_23/24/21/22/123/124/25/26/37/46;M6_41;M6_46;M6_ER1",
+    "User": ""
+}, {
+    "Clip": "clip_700_par_psf4",
+    "MinX": 785390,
+    "MinY": 2283740,
+    "MaxX": 795590,
+    "MaxY": 2293960,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_701_par_psf4",
+    "MinX": 1159500,
+    "MinY": 2379500,
+    "MaxX": 1169700,
+    "MaxY": 2389720,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_702_par_psf4",
+    "MinX": 3971410,
+    "MinY": 3720140,
+    "MaxX": 3992100,
+    "MaxY": 3738340,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_703_par_psf4",
+    "MinX": 1272590,
+    "MinY": 3871760,
+    "MaxX": 1282790,
+    "MaxY": 3881980,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_704_par_psf4",
+    "MinX": 4044590,
+    "MinY": 3863780,
+    "MaxX": 4054790,
+    "MaxY": 3874000,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_705_par_psf4",
+    "MinX": 3943790,
+    "MinY": 3831860,
+    "MaxX": 3953990,
+    "MaxY": 3842080,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_706_par_psf4",
+    "MinX": 3910190,
+    "MinY": 3815900,
+    "MaxX": 3920390,
+    "MaxY": 3826120,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_707_par_psf4",
+    "MinX": 1411500,
+    "MinY": 3927620,
+    "MaxX": 1421700,
+    "MaxY": 3937840,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_708_par_psf4",
+    "MinX": 1321210,
+    "MinY": 3999440,
+    "MaxX": 1331410,
+    "MaxY": 4009660,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_709_par_psf4",
+    "MinX": 4111790,
+    "MinY": 4095200,
+    "MaxX": 4121990,
+    "MaxY": 4105420,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_70_par_psf4",
+    "MinX": 354640,
+    "MinY": 423340,
+    "MaxX": 366100,
+    "MaxY": 434680,
+    "Status": "1",
+    "Error": "M5BC_21;M5_44;M5_60",
+    "User": "user3"
+}, {
+    "Clip": "clip_710_par_psf4",
+    "MinX": 4118390,
+    "MinY": 4246820,
+    "MaxX": 4128590,
+    "MaxY": 4257040,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_711_par_psf4",
+    "MinX": 3887410,
+    "MinY": 4302680,
+    "MaxX": 3897610,
+    "MaxY": 4312900,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_712_par_psf4",
+    "MinX": 2963410,
+    "MinY": 4302680,
+    "MaxX": 2973610,
+    "MaxY": 4312900,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_713_par_psf4",
+    "MinX": 4126810,
+    "MinY": 4286720,
+    "MaxX": 4137010,
+    "MaxY": 4296940,
+    "Status": "0",
+    "Error": "V2_32",
+    "User": ""
+}, {
+    "Clip": "clip_714_par_psf4",
+    "MinX": 2028590,
+    "MinY": 4262780,
+    "MaxX": 2038790,
+    "MaxY": 4273000,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_715_par_psf4",
+    "MinX": 2992790,
+    "MinY": 4262780,
+    "MaxX": 3002990,
+    "MaxY": 4273000,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_716_par_psf4",
+    "MinX": 3270010,
+    "MinY": 4438340,
+    "MaxX": 3280210,
+    "MaxY": 4448560,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_717_par_psf4",
+    "MinX": 3152410,
+    "MinY": 4438340,
+    "MaxX": 3162610,
+    "MaxY": 4448560,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user3"
+}, {
+    "Clip": "clip_718_par_psf4",
+    "MinX": 3858010,
+    "MinY": 4414400,
+    "MaxX": 3868210,
+    "MaxY": 4424620,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_719_par_psf4",
+    "MinX": 4233900,
+    "MinY": 4414400,
+    "MaxX": 4244100,
+    "MaxY": 4424620,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_71_par_psf4",
+    "MinX": 136860,
+    "MinY": 400020,
+    "MaxX": 248500,
+    "MaxY": 435140,
+    "Status": "1",
+    "Error": "M4_21;M4_41;M5BB_22;M5BB_33;M5BB_34;M5BB_35;M5_44;M5_60",
+    "User": "user3"
+}, {
+    "Clip": "clip_720_par_psf4",
+    "MinX": 4135190,
+    "MinY": 4374500,
+    "MaxX": 4145390,
+    "MaxY": 4384720,
+    "Status": "2",
+    "Error": "V2_32",
+    "User": "user2"
+}, {
+    "Clip": "clip_721_par_psf4",
+    "MinX": 4099500,
+    "MinY": 4374500,
+    "MaxX": 4109700,
+    "MaxY": 4384720,
+    "Status": "1",
+    "Error": "V2_32",
+    "User": "user1"
+}, {
+    "Clip": "clip_72_par_psf4",
+    "MinX": 138500,
+    "MinY": 185930,
+    "MaxX": 150300,
+    "MaxY": 196130,
+    "Status": "2",
+    "Error": "M5CC_27;M5CC_28",
+    "User": "user2"
+}, {
+    "Clip": "clip_73_par_psf4",
+    "MinX": 72240,
+    "MinY": 393930,
+    "MaxX": 101660,
+    "MaxY": 410620,
+    "Status": "2",
+    "Error": "M3_21;M3_22;M3_42;M3_44;M5BB_33;M5BB_34;M5BB_34/35_INFO;M5BB_35;M5BB_38;M5BC_21;M5_21;M5_44;M5_ER1;V3_33;V4_22;V5_26;V5_33",
+    "User": "user2"
+}, {
+    "Clip": "clip_74_par_psf4",
+    "MinX": 207500,
+    "MinY": 1240120,
+    "MaxX": 236060,
+    "MaxY": 1256600,
+    "Status": "0",
+    "Error": "M3_21;M3_22;M3_42;M3_44;M3_47;M3_48;M3_ER0;M5BB_34;M5BB_34/35_INFO;M5BC_21;M5_21;M5_44;V2_240;V2_ER2;V3_128;V3_28;V3_33;V3_41;V5_26;V5_33",
+    "User": ""
+}, {
+    "Clip": "clip_75_par_psf4",
+    "MinX": 3165240,
+    "MinY": 2022620,
+    "MaxX": 3192860,
+    "MaxY": 2038000,
+    "Status": "1",
+    "Error": "M3_138;M3_21;M3_22;M3_42;M3_44;M3_ER0;M5BB_22;M5BB_33;M5BB_34;M5BB_34/35_INFO;M5BB_35;M5BC_21;M5_21;M5_42;M5_44;V2_24;V3_33;V4_22;V5_152;V5_26;V5_33",
+    "User": "user1"
+}, {
+    "Clip": "clip_76_par_psf4",
+    "MinX": 2391500,
+    "MinY": 1766620,
+    "MaxX": 2420000,
+    "MaxY": 1783360,
+    "Status": "0",
+    "Error": "M3_21;M3_22;M3_42;M3_44;M5BB_34;M5BB_34/35_INFO;M5_21;M5_44;V3_33;V5_26;V5_33",
+    "User": ""
+}, {
+    "Clip": "clip_77_par_psf4",
+    "MinX": 708150,
+    "MinY": 2994930,
+    "MaxX": 740800,
+    "MaxY": 3012230,
+    "Status": "2",
+    "Error": "M2_41;M3_138;M3_147;M3_21;M3_22;M3_42;M3_44;M3_47;M3_ER0;M5BB_34;M5BB_34/35_INFO;M5_21;M5_44;V2_24;V3_33;V5_26;V5_33",
+    "User": "user2"
+}, {
+    "Clip": "clip_78_par_psf4",
+    "MinX": 3825920,
+    "MinY": 2140,
+    "MaxX": 3836440,
+    "MaxY": 12690,
+    "Status": "1",
+    "Error": "M4_41",
+    "User": "user2"
+}, {
+    "Clip": "clip_79_par_psf4",
+    "MinX": 3327680,
+    "MinY": 2140,
+    "MaxX": 3338200,
+    "MaxY": 12690,
+    "Status": "1",
+    "Error": "M4_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_7_par_psf4",
+    "MinX": 2243300,
+    "MinY": 1631520,
+    "MaxX": 2254710,
+    "MaxY": 1643300,
+    "Status": "1",
+    "Error": "M6_149;M6_23/24/21/22/123/124/25/26/37/46;M6_41;M6_46;M6_ER1",
+    "User": "user3"
+}, {
+    "Clip": "clip_80_par_psf4",
+    "MinX": 1174000,
+    "MinY": 1070340,
+    "MaxX": 1184410,
+    "MaxY": 1080890,
+    "Status": "1",
+    "Error": "M4_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_81_par_psf4",
+    "MinX": 217830,
+    "MinY": 1581060,
+    "MaxX": 228240,
+    "MaxY": 1591610,
+    "Status": "2",
+    "Error": "M4_41",
+    "User": "user1"
+}, {
+    "Clip": "clip_82_par_psf4",
+    "MinX": 4019720,
+    "MinY": 4246380,
+    "MaxX": 4058640,
+    "MaxY": 4265020,
+    "Status": "0",
+    "Error": "M4_41;V2_152",
+    "User": ""
+}, {
+    "Clip": "clip_83_par_psf4",
+    "MinX": 2108390,
+    "MinY": 4238840,
+    "MaxX": 2120400,
+    "MaxY": 4273000,
+    "Status": "2",
+    "Error": "M4_41;V2_152",
+    "User": "user3"
+}, {
+    "Clip": "clip_84_par_psf4",
+    "MinX": 4577990,
+    "MinY": 4557600,
+    "MaxX": 4588400,
+    "MaxY": 4568150,
+    "Status": "0",
+    "Error": "M4_41",
+    "User": ""
+}, {
+    "Clip": "clip_85_par_psf4",
+    "MinX": 3780690,
+    "MinY": -2610,
+    "MaxX": 3790890,
+    "MaxY": 7590,
+    "Status": "0",
+    "Error": "M7_70",
+    "User": ""
+}, {
+    "Clip": "clip_86_par_psf4",
+    "MinX": 5791380,
+    "MinY": -5560,
+    "MaxX": 5801660,
+    "MaxY": 5560,
+    "Status": "0",
+    "Error": "M5_47",
+    "User": ""
+}, {
+    "Clip": "clip_87_par_psf4",
+    "MinX": 1187140,
+    "MinY": 1601910,
+    "MaxX": 1197420,
+    "MaxY": 1612470,
+    "Status": "2",
+    "Error": "M5_47",
+    "User": "user2"
+}, {
+    "Clip": "clip_88_par_psf4",
+    "MinX": 3357980,
+    "MinY": 4638800,
+    "MaxX": 3368260,
+    "MaxY": 4649920,
+    "Status": "2",
+    "Error": "M5_47",
+    "User": "user2"
+}, {
+    "Clip": "clip_89_par_psf4",
+    "MinX": 767780,
+    "MinY": 172080,
+    "MaxX": 787240,
+    "MaxY": 196050,
+    "Status": "1",
+    "Error": "M4_47;M5_44",
+    "User": "user3"
+}, {
+    "Clip": "clip_8_par_psf4",
+    "MinX": 5740070,
+    "MinY": 3772680,
+    "MaxX": 5750270,
+    "MaxY": 3785640,
+    "Status": "1",
+    "Error": "M6_149",
+    "User": "user3"
+}, {
+    "Clip": "clip_90_par_psf4",
+    "MinX": 3562690,
+    "MinY": 159620,
+    "MaxX": 3573250,
+    "MaxY": 169940,
+    "Status": "0",
+    "Error": "M4_47",
+    "User": ""
+}, {
+    "Clip": "clip_91_par_psf4",
+    "MinX": 2125980,
+    "MinY": 185240,
+    "MaxX": 2136540,
+    "MaxY": 195560,
+    "Status": "1",
+    "Error": "M4_47",
+    "User": "user3"
+}, {
+    "Clip": "clip_92_par_psf4",
+    "MinX": 2604570,
+    "MinY": 539160,
+    "MaxX": 2615130,
+    "MaxY": 549480,
+    "Status": "0",
+    "Error": "M4_47",
+    "User": ""
+}, {
+    "Clip": "clip_93_par_psf4",
+    "MinX": 638450,
+    "MinY": 503880,
+    "MaxX": 649010,
+    "MaxY": 514200,
+    "Status": "2",
+    "Error": "M4_47",
+    "User": "user3"
+}, {
+    "Clip": "clip_94_par_psf4",
+    "MinX": 5376220,
+    "MinY": 1318960,
+    "MaxX": 5386780,
+    "MaxY": 1329280,
+    "Status": "1",
+    "Error": "M4_47",
+    "User": "user1"
+}, {
+    "Clip": "clip_95_par_psf4",
+    "MinX": 2036530,
+    "MinY": 1382800,
+    "MaxX": 2047090,
+    "MaxY": 1393120,
+    "Status": "0",
+    "Error": "M4_47",
+    "User": ""
+}, {
+    "Clip": "clip_96_par_psf4",
+    "MinX": 5805180,
+    "MinY": 1647820,
+    "MaxX": 5815740,
+    "MaxY": 1658140,
+    "Status": "0",
+    "Error": "M4_47",
+    "User": ""
+}, {
+    "Clip": "clip_97_par_psf4",
+    "MinX": 927210,
+    "MinY": 1875880,
+    "MaxX": 937770,
+    "MaxY": 1886200,
+    "Status": "1",
+    "Error": "M4_47",
+    "User": "user2"
+}, {
+    "Clip": "clip_98_par_psf4",
+    "MinX": 5456540,
+    "MinY": 1798320,
+    "MaxX": 5467100,
+    "MaxY": 1808640,
+    "Status": "2",
+    "Error": "M4_47",
+    "User": "user3"
+}, {
+    "Clip": "clip_99_par_psf4",
+    "MinX": 4118510,
+    "MinY": 3120200,
+    "MaxX": 4129070,
+    "MaxY": 3130520,
+    "Status": "0",
+    "Error": "M4_47",
+    "User": ""
+}, {
+    "Clip": "clip_9_par_psf4",
+    "MinX": 5337720,
+    "MinY": 3772680,
+    "MaxX": 5347920,
+    "MaxY": 3785640,
+    "Status": "2",
+    "Error": "M6_149",
+    "User": "user1"
+}]);
